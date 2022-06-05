@@ -54,6 +54,7 @@ public class RepoSense {
     public static void main(String[] args) {
         try {
             TimeUtil.startTimer();
+
             CliArguments cliArguments = ArgsParser.parse(args);
             List<RepoConfiguration> configs = null;
             ReportConfiguration reportConfig = new ReportConfiguration();
