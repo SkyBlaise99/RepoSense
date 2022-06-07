@@ -359,10 +359,14 @@ public class ArgsParser {
             if (configFolderPath.equals(EMPTY_PATH)) {
                 logger.info(MESSAGE_USING_DEFAULT_CONFIG_PATH);
             }
+
+            boolean shouldPrettyPrintJson = results.get(JSON_PRETTY_PRINT_FLAG[0]);
+
             return new ConfigCliArguments(configFolderPath, outputFolderPath, assetsFolderPath, sinceDate, untilDate,
                     isSinceDateProvided, isUntilDateProvided, numCloningThreads, numAnalysisThreads, formats,
                     shouldIncludeLastModifiedDate, shouldPerformShallowCloning, isAutomaticallyLaunching,
-                    isStandaloneConfigIgnored, isFileSizeLimitIgnored, zoneId, reportConfig, shouldFindPreviousAuthors);
+                    isStandaloneConfigIgnored, isFileSizeLimitIgnored, zoneId, reportConfig, shouldFindPreviousAuthors,
+                    shouldPrettyPrintJson);
         } catch (HelpScreenException hse) {
             throw hse;
         } catch (ArgumentParserException ape) {
