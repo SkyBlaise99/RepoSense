@@ -58,6 +58,11 @@ public class FileUtil {
             "Exception occurred while attempting to zip the report files.";
     private static final String MESSAGE_FAIL_TO_COPY_ASSETS =
             "Exception occurred while attempting to copy custom assets.";
+    private static boolean isJsonPrettyPrintingUsed = false;
+
+    public static void setJsonPrintingMode(boolean isJsonPrettyPrintingUsed) {
+        FileUtil.isJsonPrettyPrintingUsed = isJsonPrettyPrintingUsed;
+    }
 
     /**
      * Zips all files of type {@code fileTypes} that are in the directory {@code pathsToZip} into a single file and
@@ -101,11 +106,17 @@ public class FileUtil {
      * was an error while writing the JSON file.
      */
     public static Optional<Path> writeJsonFile(Object object, String path) {
-        Gson gson = new GsonBuilder()
+        GsonBuilder gsonBuilder = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (date, typeOfSrc, context)
                         -> new JsonPrimitive(date.format(DateTimeFormatter.ofPattern(GITHUB_API_DATE_FORMAT))))
-                .registerTypeAdapter(FileType.class, new FileType.FileTypeSerializer())
-                .create();
+                .registerTypeAdapter(FileType.class, new FileType.FileTypeSerializer());
+
+        if (isJsonPrettyPrintingUsed) {
+            gsonBuilder.setPrettyPrinting();
+        }
+
+        Gson gson = gsonBuilder.create();
+
         // Gson serializer from:
         // https://stackoverflow.com/questions/39192945/serialize-java-8-localdate-as-yyyy-mm-dd-with-gson
         String result = gson.toJson(object);
