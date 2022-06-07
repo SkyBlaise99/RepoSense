@@ -25,6 +25,7 @@ public abstract class CliArguments {
     protected int numAnalysisThreads;
     protected ZoneId zoneId;
     protected boolean isFindingPreviousAuthorsPerformed;
+    protected boolean isJsonPrettyPrintingUsed;
 
     public ZoneId getZoneId() {
         return zoneId;
@@ -90,6 +91,10 @@ public abstract class CliArguments {
         return isFindingPreviousAuthorsPerformed;
     }
 
+    public boolean isJsonPrettyPrintingUsed() {
+        return isJsonPrettyPrintingUsed;
+    }
+
     @Override
     public boolean equals(Object other) {
         // short circuit if same object
@@ -118,6 +123,7 @@ public abstract class CliArguments {
                 && this.numAnalysisThreads == otherCliArguments.numAnalysisThreads
                 && this.zoneId.equals(otherCliArguments.zoneId)
                 && this.isFindingPreviousAuthorsPerformed == otherCliArguments.isFindingPreviousAuthorsPerformed
-                && this.isFileSizeLimitIgnored == otherCliArguments.isFileSizeLimitIgnored;
+                && this.isFileSizeLimitIgnored == otherCliArguments.isFileSizeLimitIgnored
+                && this.isJsonPrettyPrintingUsed == otherCliArguments.isJsonPrettyPrintingUsed;
     }
 }
