@@ -91,7 +91,7 @@ public class RepoSense {
                 RepoConfiguration.setToFalseIsFindingPreviousAuthorsPerformedToRepoConfigs(configs);
             }
 
-            FileUtil.setJsonPrintingMode(cliArguments.isJsonPrettyPrintingUsed());
+            FileUtil.setPrettyPrintingMode(cliArguments.isPrettyPrintingUsed());
 
             List<Path> reportFoldersAndFiles = ReportGenerator.generateReposReport(configs,
                     cliArguments.getOutputFilePath().toAbsolutePath().toString(),

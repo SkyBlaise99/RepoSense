@@ -61,7 +61,7 @@ public class ArgsParser {
 
     public static final String[] CLONING_THREADS_FLAG = new String[]{"--cloning-threads"};
     public static final String[] ANALYSIS_THREADS_FLAG = new String[]{"--analysis-threads"};
-    public static final String[] JSON_PRETTY_PRINT_FLAG = new String[]{"--use-json-pretty-printing"};
+    public static final String[] JSON_PRINT_MODE_FLAGS = new String[]{"--use-json-pretty-printing", "-j"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -230,10 +230,10 @@ public class ArgsParser {
                 .setDefault(DEFAULT_NUM_ANALYSIS_THREADS)
                 .help(FeatureControl.SUPPRESS);
 
-        parser.addArgument(JSON_PRETTY_PRINT_FLAG)
-                .dest(JSON_PRETTY_PRINT_FLAG[0])
+        parser.addArgument(JSON_PRINT_MODE_FLAGS)
+                .dest(JSON_PRINT_MODE_FLAGS[0])
                 .action(Arguments.storeTrue())
-                .help("A flag to output more readable json files");
+                .help("A flag to use json pretty printing when generating the json files.");
 
         return parser;
     }
@@ -360,13 +360,13 @@ public class ArgsParser {
                 logger.info(MESSAGE_USING_DEFAULT_CONFIG_PATH);
             }
 
-            boolean shouldPrettyPrintJson = results.get(JSON_PRETTY_PRINT_FLAG[0]);
+            boolean isJsonPrettyPrintingUsed = results.get(JSON_PRINT_MODE_FLAGS[0]);
 
             return new ConfigCliArguments(configFolderPath, outputFolderPath, assetsFolderPath, sinceDate, untilDate,
                     isSinceDateProvided, isUntilDateProvided, numCloningThreads, numAnalysisThreads, formats,
                     shouldIncludeLastModifiedDate, shouldPerformShallowCloning, isAutomaticallyLaunching,
                     isStandaloneConfigIgnored, isFileSizeLimitIgnored, zoneId, reportConfig, shouldFindPreviousAuthors,
-                    shouldPrettyPrintJson);
+                    isJsonPrettyPrintingUsed);
         } catch (HelpScreenException hse) {
             throw hse;
         } catch (ArgumentParserException ape) {

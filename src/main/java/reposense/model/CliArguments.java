@@ -25,7 +25,7 @@ public abstract class CliArguments {
     protected int numAnalysisThreads;
     protected ZoneId zoneId;
     protected boolean isFindingPreviousAuthorsPerformed;
-    protected boolean isJsonPrettyPrintingUsed;
+    protected boolean isPrettyPrintingUsed;
 
     public ZoneId getZoneId() {
         return zoneId;
@@ -91,8 +91,8 @@ public abstract class CliArguments {
         return isFindingPreviousAuthorsPerformed;
     }
 
-    public boolean isJsonPrettyPrintingUsed() {
-        return isJsonPrettyPrintingUsed;
+    public boolean isPrettyPrintingUsed() {
+        return isPrettyPrintingUsed;
     }
 
     @Override
@@ -124,6 +124,6 @@ public abstract class CliArguments {
                 && this.zoneId.equals(otherCliArguments.zoneId)
                 && this.isFindingPreviousAuthorsPerformed == otherCliArguments.isFindingPreviousAuthorsPerformed
                 && this.isFileSizeLimitIgnored == otherCliArguments.isFileSizeLimitIgnored
-                && this.isJsonPrettyPrintingUsed == otherCliArguments.isJsonPrettyPrintingUsed;
+                && this.isPrettyPrintingUsed == otherCliArguments.isPrettyPrintingUsed;
     }
 }

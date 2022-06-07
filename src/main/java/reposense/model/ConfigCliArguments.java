@@ -30,7 +30,7 @@ public class ConfigCliArguments extends CliArguments {
             boolean isShallowCloningPerformed, boolean isAutomaticallyLaunching,
             boolean isStandaloneConfigIgnored, boolean isFileSizeLimitIgnored, ZoneId zoneId,
             ReportConfiguration reportConfiguration, boolean isFindingPreviousAuthorsPerformed,
-            boolean isJsonPrettyPrintingUsed) {
+            boolean isPrettyPrintingUsed) {
         this.configFolderPath = configFolderPath.equals(EMPTY_PATH)
                 ? configFolderPath.toAbsolutePath()
                 : configFolderPath;
@@ -55,7 +55,7 @@ public class ConfigCliArguments extends CliArguments {
         this.zoneId = zoneId;
         this.reportConfiguration = reportConfiguration;
         this.isFindingPreviousAuthorsPerformed = isFindingPreviousAuthorsPerformed;
-        this.isJsonPrettyPrintingUsed = isJsonPrettyPrintingUsed;
+        this.isPrettyPrintingUsed = isPrettyPrintingUsed;
     }
 
     public Path getConfigFolderPath() {

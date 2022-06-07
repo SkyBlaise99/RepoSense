@@ -58,10 +58,10 @@ public class FileUtil {
             "Exception occurred while attempting to zip the report files.";
     private static final String MESSAGE_FAIL_TO_COPY_ASSETS =
             "Exception occurred while attempting to copy custom assets.";
-    private static boolean isJsonPrettyPrintingUsed = false;
+    private static boolean isPrettyPrintingUsed = false;
 
-    public static void setJsonPrintingMode(boolean isJsonPrettyPrintingUsed) {
-        FileUtil.isJsonPrettyPrintingUsed = isJsonPrettyPrintingUsed;
+    public static void setPrettyPrintingMode(boolean isPrettyPrintingAdopted) {
+        isPrettyPrintingUsed = isPrettyPrintingAdopted;
     }
 
     /**
@@ -111,7 +111,7 @@ public class FileUtil {
                         -> new JsonPrimitive(date.format(DateTimeFormatter.ofPattern(GITHUB_API_DATE_FORMAT))))
                 .registerTypeAdapter(FileType.class, new FileType.FileTypeSerializer());
 
-        if (isJsonPrettyPrintingUsed) {
+        if (isPrettyPrintingUsed) {
             gsonBuilder.setPrettyPrinting();
         }
 
