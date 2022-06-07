@@ -61,6 +61,7 @@ public class ArgsParser {
 
     public static final String[] CLONING_THREADS_FLAG = new String[]{"--cloning-threads"};
     public static final String[] ANALYSIS_THREADS_FLAG = new String[]{"--analysis-threads"};
+    public static final String[] JSON_PRETTY_PRINT_FLAG = new String[]{"--use-json-pretty-printing"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -228,6 +229,11 @@ public class ArgsParser {
                 .type(new AnalysisThreadsArgumentType())
                 .setDefault(DEFAULT_NUM_ANALYSIS_THREADS)
                 .help(FeatureControl.SUPPRESS);
+
+        parser.addArgument(JSON_PRETTY_PRINT_FLAG)
+                .dest(JSON_PRETTY_PRINT_FLAG[0])
+                .action(Arguments.storeTrue())
+                .help("A flag to output more readable json files");
 
         return parser;
     }
