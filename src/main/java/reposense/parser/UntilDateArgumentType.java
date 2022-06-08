@@ -17,6 +17,11 @@ public class UntilDateArgumentType extends DateArgumentType {
     public Optional<LocalDateTime> convert(ArgumentParser parser, Argument arg, String value)
             throws ArgumentParserException {
         String untilDate = TimeUtil.extractDate(value);
+        if (untilDate.equals(TimeUtil.INVALID_DATE)) {
+            throw new ArgumentParserException(
+                    String.format(PARSE_EXCEPTION_MESSAGE_INVALID_DATE_STRING_FORMAT, value), parser);
+        }
+
         return super.convert(parser, arg, untilDate + " 23:59:59");
     }
 }
