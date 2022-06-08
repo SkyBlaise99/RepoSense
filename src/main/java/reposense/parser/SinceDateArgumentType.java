@@ -43,7 +43,7 @@ public class SinceDateArgumentType extends DateArgumentType {
         String sinceDate = TimeUtil.extractDate(value);
         if (sinceDate.equals(TimeUtil.INVALID_DATE)) {
             throw new ArgumentParserException(
-                    String.format(PARSE_EXCEPTION_MESSAGE_INVALID_DATE_STRING_FORMAT, value), parser);
+                    String.format(EXTRACT_EXCEPTION_MESSAGE_INVALID_DATE_FORMAT, value), parser);
         }
 
         return super.convert(parser, arg, sinceDate + " 00:00:00");

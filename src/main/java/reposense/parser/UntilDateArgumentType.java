@@ -19,7 +19,7 @@ public class UntilDateArgumentType extends DateArgumentType {
         String untilDate = TimeUtil.extractDate(value);
         if (untilDate.equals(TimeUtil.INVALID_DATE)) {
             throw new ArgumentParserException(
-                    String.format(PARSE_EXCEPTION_MESSAGE_INVALID_DATE_STRING_FORMAT, value), parser);
+                    String.format(EXTRACT_EXCEPTION_MESSAGE_INVALID_DATE_FORMAT, value), parser);
         }
 
         return super.convert(parser, arg, untilDate + " 23:59:59");
