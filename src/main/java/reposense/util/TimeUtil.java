@@ -26,6 +26,8 @@ public class TimeUtil {
     private static final String MESSAGE_SINCE_DATE_LATER_THAN_TODAY_DATE =
             "\"Since Date\" must not be later than today's date.";
 
+    public static final String INVALID_DATE = "invalid date";
+
     /**
      * Sets the {@code startTime} to be the current time.
      */
@@ -167,7 +169,7 @@ public class TimeUtil {
      */
     public static String extractDate(String date) {
         Matcher matcher = Pattern.compile(DATE_FORMAT_REGEX).matcher(date);
-        String extractedDate = date;
+        String extractedDate = INVALID_DATE;
         if (matcher.find()) {
             extractedDate = matcher.group(1);
         }
