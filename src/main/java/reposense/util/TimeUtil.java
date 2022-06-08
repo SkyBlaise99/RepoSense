@@ -15,6 +15,8 @@ import reposense.parser.SinceDateArgumentType;
  * Contains time related functionalities.
  */
 public class TimeUtil {
+    public static final String INVALID_DATE = "invalid date";
+
     private static Long startTime;
     private static final String DATE_FORMAT_REGEX =
             "^((0?[1-9]|[12][0-9]|3[01])\\/(0?[1-9]|1[012])\\/(19|2[0-9])[0-9]{2})";
@@ -25,8 +27,6 @@ public class TimeUtil {
             "\"Since Date\" cannot be later than \"Until Date\".";
     private static final String MESSAGE_SINCE_DATE_LATER_THAN_TODAY_DATE =
             "\"Since Date\" must not be later than today's date.";
-
-    public static final String INVALID_DATE = "invalid date";
 
     /**
      * Sets the {@code startTime} to be the current time.
