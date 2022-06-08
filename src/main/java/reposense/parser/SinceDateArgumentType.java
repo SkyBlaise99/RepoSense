@@ -39,7 +39,13 @@ public class SinceDateArgumentType extends DateArgumentType {
         if (FIRST_COMMIT_DATE_SHORTHAND.equals(value)) {
             return Optional.of(ARBITRARY_FIRST_COMMIT_DATE_LOCAL);
         }
+
         String sinceDate = TimeUtil.extractDate(value);
+        if (sinceDate.equals(TimeUtil.INVALID_DATE)) {
+            throw new ArgumentParserException(
+                    String.format(PARSE_EXCEPTION_MESSAGE_INVALID_DATE_STRING_FORMAT, value), parser);
+        }
+
         return super.convert(parser, arg, sinceDate + " 00:00:00");
     }
 

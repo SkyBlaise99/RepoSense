@@ -13,7 +13,7 @@ import reposense.util.TimeUtil;
  * Verifies and parses a string-formatted date to a {@link LocalDateTime} object.
  */
 public class DateArgumentType implements ArgumentType<Optional<LocalDateTime>> {
-    private static final String PARSE_EXCEPTION_MESSAGE_INVALID_DATE_STRING_FORMAT = "Invalid Date: %s";
+    protected static final String PARSE_EXCEPTION_MESSAGE_INVALID_DATE_STRING_FORMAT = "Invalid Date: %s";
 
     @Override
     public Optional<LocalDateTime> convert(ArgumentParser parser, Argument arg, String value)
