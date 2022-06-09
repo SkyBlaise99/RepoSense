@@ -16,17 +16,16 @@ import reposense.parser.SinceDateArgumentType;
  */
 public class TimeUtil {
     public static final String INVALID_DATE = "invalid date";
-
-    private static Long startTime;
     private static final String DATE_FORMAT_REGEX =
-            "^((0?[1-9]|[12][0-9]|3[01])\\/(0?[1-9]|1[012])\\/(19|2[0-9])[0-9]{2})";
-
+            "^((0?[1-9]|[12][0-9]|3[01])\\/(0?[1-9]|1[012])\\/((19|2[0-9])[0-9]{2}))";
     // "uuuu" is used for year since "yyyy" does not work with ResolverStyle.STRICT
     private static final DateTimeFormatter CLI_ARGS_DATE_FORMAT = DateTimeFormatter.ofPattern("d/M/uuuu HH:mm:ss");
     private static final String MESSAGE_SINCE_DATE_LATER_THAN_UNTIL_DATE =
             "\"Since Date\" cannot be later than \"Until Date\".";
     private static final String MESSAGE_SINCE_DATE_LATER_THAN_TODAY_DATE =
             "\"Since Date\" must not be later than today's date.";
+    private static final String STANDARD_DATE_FORMAT = "%s/%s/%s";
+    private static Long startTime;
 
     /**
      * Sets the {@code startTime} to be the current time.
@@ -170,9 +169,15 @@ public class TimeUtil {
     public static String extractDate(String date) {
         Matcher matcher = Pattern.compile(DATE_FORMAT_REGEX).matcher(date);
         String extractedDate = INVALID_DATE;
+
         if (matcher.find()) {
-            extractedDate = matcher.group(1);
+            String day = matcher.group(2);
+            String month = matcher.group(3);
+            String year = matcher.group(4);
+
+            extractedDate = String.format(STANDARD_DATE_FORMAT, day, month, year);
         }
+
         return extractedDate;
     }
 
