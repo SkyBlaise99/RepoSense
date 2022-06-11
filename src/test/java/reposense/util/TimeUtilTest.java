@@ -11,7 +11,11 @@ public class TimeUtilTest {
     @Test
     public void extractDate_validDate_success() {
         String expectedDate = "20/05/2019";
+
         String actualDate = TimeUtil.extractDate(expectedDate);
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2019/05/20");
         Assertions.assertEquals(expectedDate, actualDate);
     }
 
@@ -19,7 +23,11 @@ public class TimeUtilTest {
     public void extractDate_validDateAndTime_success() {
         String originalDateAndTime = "20/05/2020 12:34:56";
         String expectedDate = "20/05/2020";
+
         String actualDate = TimeUtil.extractDate(originalDateAndTime);
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2020/05/20 12:34:56");
         Assertions.assertEquals(expectedDate, actualDate);
     }
 
@@ -29,12 +37,21 @@ public class TimeUtilTest {
         String actualDate = TimeUtil.extractDate(expectedDate);
         Assertions.assertEquals(expectedDate, actualDate);
 
+        actualDate = TimeUtil.extractDate("2020/05/1");
+        Assertions.assertEquals(expectedDate, actualDate);
+
         expectedDate = "01/5/2020";
         actualDate = TimeUtil.extractDate(expectedDate);
         Assertions.assertEquals(expectedDate, actualDate);
 
+        actualDate = TimeUtil.extractDate("2020/5/01");
+        Assertions.assertEquals(expectedDate, actualDate);
+
         expectedDate = "1/5/2020";
         actualDate = TimeUtil.extractDate(expectedDate);
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2020/5/1");
         Assertions.assertEquals(expectedDate, actualDate);
     }
 
@@ -48,6 +65,12 @@ public class TimeUtilTest {
         actualDate = TimeUtil.extractDate("01.01.2020");
         Assertions.assertEquals(expectedDate, actualDate);
 
+        actualDate = TimeUtil.extractDate("2020-01-01");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2020.01.01");
+        Assertions.assertEquals(expectedDate, actualDate);
+
         // Mix and match actually also works, but I doubt anyone will use it
         actualDate = TimeUtil.extractDate("01/01.2020");
         Assertions.assertEquals(expectedDate, actualDate);
@@ -56,6 +79,15 @@ public class TimeUtilTest {
         Assertions.assertEquals(expectedDate, actualDate);
 
         actualDate = TimeUtil.extractDate("01-01/2020");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2020.01/01");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2020-01.01");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("2020/01-01");
         Assertions.assertEquals(expectedDate, actualDate);
     }
 
