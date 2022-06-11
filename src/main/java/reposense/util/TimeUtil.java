@@ -16,8 +16,10 @@ import reposense.parser.SinceDateArgumentType;
  */
 public class TimeUtil {
     public static final String INVALID_DATE = "invalid date";
-    private static final String DATE_FORMAT_REGEX =
+    private static final String DATE_FORMAT_DAY_MONTH_YEAR_REGEX =
             "^((0?[1-9]|[12]\\d|3[01])[/.-](0?[1-9]|1[012])[/.-]((19|2\\d)\\d{2}))";
+    private static final String DATE_FORMAT_YEAR_MONTH_DAY_REGEX =
+            "^(((19|2\\d)\\d{2})[/.-](0?[1-9]|1[012])[/.-]([12]\\d|3[01]|0?[1-9]))";
     // "uuuu" is used for year since "yyyy" does not work with ResolverStyle.STRICT
     private static final DateTimeFormatter CLI_ARGS_DATE_FORMAT = DateTimeFormatter.ofPattern("d/M/uuuu HH:mm:ss");
     private static final String MESSAGE_SINCE_DATE_LATER_THAN_UNTIL_DATE =
@@ -165,16 +167,28 @@ public class TimeUtil {
 
     /**
      * Extracts the date and reformats into {@link TimeUtil#STANDARD_DATE_FORMAT} if {@code date} string matches the
-     * {@link TimeUtil#DATE_FORMAT_REGEX}. Else returns {@link TimeUtil#INVALID_DATE}.
+     * {@link TimeUtil#DATE_FORMAT_DAY_MONTH_YEAR_REGEX} or {@link TimeUtil#DATE_FORMAT_YEAR_MONTH_DAY_REGEX}. Else
+     * returns {@link TimeUtil#INVALID_DATE}.
      */
     public static String extractDate(String date) {
-        Matcher matcher = Pattern.compile(DATE_FORMAT_REGEX).matcher(date);
-        String extractedDate = INVALID_DATE;
+        Matcher matcher1 = Pattern.compile(DATE_FORMAT_DAY_MONTH_YEAR_REGEX).matcher(date);
+        Matcher matcher2 = Pattern.compile(DATE_FORMAT_YEAR_MONTH_DAY_REGEX).matcher(date);
 
-        if (matcher.find()) {
-            String day = matcher.group(2);
-            String month = matcher.group(3);
-            String year = matcher.group(4);
+        String extractedDate = INVALID_DATE;
+        String year;
+        String month;
+        String day;
+
+        if (matcher1.find()) {
+            day = matcher1.group(2);
+            month = matcher1.group(3);
+            year = matcher1.group(4);
+
+            extractedDate = String.format(STANDARD_DATE_FORMAT, day, month, year);
+        } else if (matcher2.find()) {
+            day = matcher2.group(5);
+            month = matcher2.group(4);
+            year = matcher2.group(2);
 
             extractedDate = String.format(STANDARD_DATE_FORMAT, day, month, year);
         }
