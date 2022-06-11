@@ -40,41 +40,51 @@ public class TimeUtilTest {
 
     @Test
     public void extractDate_validDateWithDifferentDelimiters_success() {
-        String originalDate = "01-01-2020";
         String expectedDate = "01/01/2020";
-        String actualDate = TimeUtil.extractDate(originalDate);
+
+        String actualDate = TimeUtil.extractDate("01-01-2020");
         Assertions.assertEquals(expectedDate, actualDate);
 
-        originalDate = "01.01.2020";
-        actualDate = TimeUtil.extractDate(originalDate);
+        actualDate = TimeUtil.extractDate("01.01.2020");
         Assertions.assertEquals(expectedDate, actualDate);
 
         // Mix and match actually also works, but I doubt anyone will use it
-        originalDate = "01/01.2020";
-        actualDate = TimeUtil.extractDate(originalDate);
+        actualDate = TimeUtil.extractDate("01/01.2020");
         Assertions.assertEquals(expectedDate, actualDate);
 
-        originalDate = "01.01-2020";
-        actualDate = TimeUtil.extractDate(originalDate);
+        actualDate = TimeUtil.extractDate("01.01-2020");
         Assertions.assertEquals(expectedDate, actualDate);
 
-        originalDate = "01-01/2020";
-        actualDate = TimeUtil.extractDate(originalDate);
+        actualDate = TimeUtil.extractDate("01-01/2020");
         Assertions.assertEquals(expectedDate, actualDate);
     }
 
     @Test
-    public void extractDate_invalidDate_throwsParseException() {
+    public void extractDate_invalidDate_returnsInvalidDate() {
+        String expectedDate = TimeUtil.INVALID_DATE;
+
         // Extra digits
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("001/02/2020"));
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("01/002/2020"));
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("001/002/2020"));
+        String actualDate = TimeUtil.extractDate("001/02/2020");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("01/002/2020");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("001/002/2020");
+        Assertions.assertEquals(expectedDate, actualDate);
 
         // Use delimiter other than '/', '.', and '-'
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("01?02/2020"));
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("01/02 2020"));
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("01@02/2020"));
-        Assertions.assertThrows(ParseException.class, () -> TimeUtil.parseDate("01/02+2020"));
+        actualDate = TimeUtil.extractDate("01?02/2020");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("01/02 2020");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("01@02/2020");
+        Assertions.assertEquals(expectedDate, actualDate);
+
+        actualDate = TimeUtil.extractDate("01/02+2020");
+        Assertions.assertEquals(expectedDate, actualDate);
     }
 
     @Test
