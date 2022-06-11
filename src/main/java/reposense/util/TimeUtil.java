@@ -164,7 +164,8 @@ public class TimeUtil {
     }
 
     /**
-     * Extracts the first substring of {@code date} string that matches the {@code DATE_FORMAT_REGEX}.
+     * Extracts the date and reformats into {@link TimeUtil#STANDARD_DATE_FORMAT} if {@code date} string matches the
+     * {@link TimeUtil#DATE_FORMAT_REGEX}. Else returns {@link TimeUtil#INVALID_DATE}.
      */
     public static String extractDate(String date) {
         Matcher matcher = Pattern.compile(DATE_FORMAT_REGEX).matcher(date);
