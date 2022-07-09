@@ -19,6 +19,7 @@ import reposense.util.FileUtil;
  */
 public class RepoConfiguration {
     public static final String DEFAULT_BRANCH = "HEAD";
+    public static final String DEFAULT_EXTRA_OUTPUT_FOLDER_NAME = "";
     public static final long DEFAULT_FILE_SIZE_LIMIT = 500000;
     private static final Logger logger = LogsManager.getLogger(RepoConfiguration.class);
 
@@ -26,6 +27,7 @@ public class RepoConfiguration {
     private String branch;
     private String displayName;
     private String outputFolderName;
+    private final String extraOutputFolderName;
     private transient String zoneId;
     private transient LocalDateTime sinceDate;
     private transient LocalDateTime untilDate;
@@ -56,7 +58,13 @@ public class RepoConfiguration {
     public RepoConfiguration(RepoLocation location, String branch) {
         this(location, branch, Collections.emptyList(), Collections.emptyList(),
                 RepoConfiguration.DEFAULT_FILE_SIZE_LIMIT, false, false, Collections.emptyList(), false, false, false,
-                false, false, false, false);
+                false, false, false, false, DEFAULT_EXTRA_OUTPUT_FOLDER_NAME);
+    }
+
+    public RepoConfiguration(RepoLocation location, String branch, String extraOutputFolderName) {
+        this(location, branch, Collections.emptyList(), Collections.emptyList(),
+                RepoConfiguration.DEFAULT_FILE_SIZE_LIMIT, false, false, Collections.emptyList(), false, false, false,
+                false, false, false, false, extraOutputFolderName);
     }
 
     public RepoConfiguration(RepoLocation location, String branch, List<FileType> formats, List<String> ignoreGlobList,
@@ -64,6 +72,18 @@ public class RepoConfiguration {
             List<CommitHash> ignoreCommitList, boolean isFormatsOverriding, boolean isIgnoreGlobListOverriding,
             boolean isIgnoreCommitListOverriding, boolean isFileSizeLimitOverriding, boolean isShallowCloningPerformed,
             boolean isFindingPreviousAuthorsPerformed, boolean isIgnoredFileAnalysisSkipped) {
+        this(location, branch, formats, ignoreGlobList, fileSizeLimit, isStandaloneConfigIgnored,
+                isFileSizeLimitIgnored, ignoreCommitList, isFormatsOverriding, isIgnoreGlobListOverriding,
+                isIgnoreCommitListOverriding, isFileSizeLimitOverriding, isShallowCloningPerformed,
+                isFindingPreviousAuthorsPerformed, isIgnoredFileAnalysisSkipped, DEFAULT_EXTRA_OUTPUT_FOLDER_NAME);
+    }
+
+    public RepoConfiguration(RepoLocation location, String branch, List<FileType> formats, List<String> ignoreGlobList,
+            long fileSizeLimit, boolean isStandaloneConfigIgnored, boolean isFileSizeLimitIgnored,
+            List<CommitHash> ignoreCommitList, boolean isFormatsOverriding, boolean isIgnoreGlobListOverriding,
+            boolean isIgnoreCommitListOverriding, boolean isFileSizeLimitOverriding, boolean isShallowCloningPerformed,
+            boolean isFindingPreviousAuthorsPerformed, boolean isIgnoredFileAnalysisSkipped,
+            String extraOutputFolderName) {
         this.authorConfig = new AuthorConfiguration(location, branch);
         this.location = location;
         this.branch = location.isEmpty() ? DEFAULT_BRANCH : branch;
@@ -85,6 +105,7 @@ public class RepoConfiguration {
         String repoName = location.getRepoName();
         displayName = repoName + "[" + branch + "]";
         outputFolderName = repoName + "_" + branch;
+        this.extraOutputFolderName = extraOutputFolderName;
         repoFolderName = repoName;
 
         if (!organization.isEmpty()) {
@@ -333,6 +354,10 @@ public class RepoConfiguration {
 
         if (!getRepoName().isEmpty()) {
             path += getRepoName() + File.separator;
+
+            if (!getExtraOutputFolderName().isEmpty()) {
+                path += getExtraOutputFolderName() + File.separator;
+            }
         }
 
         return path;
@@ -580,6 +605,10 @@ public class RepoConfiguration {
 
     public String getOutputFolderName() {
         return outputFolderName;
+    }
+
+    public String getExtraOutputFolderName() {
+        return extraOutputFolderName;
     }
 
     public void setStandaloneConfigIgnored(boolean isStandaloneConfigIgnored) {
