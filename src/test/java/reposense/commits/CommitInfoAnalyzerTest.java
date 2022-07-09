@@ -11,8 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +25,7 @@ import reposense.model.Author;
 import reposense.model.CommitHash;
 import reposense.model.FileType;
 import reposense.model.FileTypeTest;
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 import reposense.util.SystemUtil;
 
@@ -34,11 +37,23 @@ public class CommitInfoAnalyzerTest extends GitTestTemplate {
     private static final FileType FILETYPE_MD = new FileType("md", Collections.singletonList("**md"));
     private static final FileType FILETYPE_TXT = new FileType("txt", Collections.singletonList("**txt"));
     private static final String DUPLICATE_AUTHORS_DUPLICATE_COMMITS_HASH = "f34c20ec2c3be63e0764d4079a575dd75269ffeb";
+    private static final String EXTRA_OUTPUT_FOLDER_NAME = CommitInfoAnalyzerTest.class.getSimpleName();
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeClass() throws Exception {
+        config = GitTestTemplate.beforeClass(EXTRA_OUTPUT_FOLDER_NAME);
+    }
 
     @BeforeEach
     public void before() throws Exception {
-        super.before();
+        config = super.before(EXTRA_OUTPUT_FOLDER_NAME);
         config.getAuthorDetailsToAuthorMap().clear();
+    }
+
+    @AfterEach
+    public void after() {
+        super.after(config);
     }
 
     @Test

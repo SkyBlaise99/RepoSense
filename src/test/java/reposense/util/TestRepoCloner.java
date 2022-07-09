@@ -27,7 +27,7 @@ public class TestRepoCloner {
      */
     public static void cloneAndBranch(RepoConfiguration config) throws GitBranchException {
         String outputFolderName = Paths.get(FileUtil.getRepoParentFolder(config).toString(),
-                config.getRepoName()).toString();
+                config.getRepoName(), config.getExtraOutputFolderName()).toString();
         clone(config, Paths.get("."), outputFolderName);
         config.updateBranch();
         GitCheckout.checkout(config.getRepoRoot(), config.getBranch());

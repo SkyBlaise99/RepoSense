@@ -9,10 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-
 import reposense.authorship.FileInfoAnalyzer;
 import reposense.authorship.FileInfoExtractor;
 import reposense.authorship.model.FileInfo;
@@ -93,33 +89,34 @@ public class GitTestTemplate {
     protected static final Author MAIN_AUTHOR = new Author(MAIN_AUTHOR_NAME);
     protected static final Author FAKE_AUTHOR = new Author(FAKE_AUTHOR_NAME);
 
-    protected static RepoConfiguration config;
+    public static RepoConfiguration beforeClass(String extraOutputFolderName) throws Exception {
+        RepoConfiguration config = new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master",
+                extraOutputFolderName);
+        config.setZoneId(TIME_ZONE_ID_STRING);
+        TestRepoCloner.cloneAndBranch(config);
 
-    @BeforeEach
-    public void before() throws Exception {
-        config = new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master");
+        return config;
+    }
+
+    public RepoConfiguration before(String extraOutputFolderName) throws Exception {
+        RepoConfiguration config = new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master",
+                extraOutputFolderName);
         config.setAuthorList(Collections.singletonList(getAlphaAllAliasAuthor()));
         config.setFormats(FileTypeTest.DEFAULT_TEST_FORMATS);
         config.setZoneId(TIME_ZONE_ID_STRING);
         config.setIsLastModifiedDateIncluded(false);
+
+        return config;
     }
 
-    @BeforeAll
-    public static void beforeClass() throws Exception {
-        config = new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master");
-        config.setZoneId(TIME_ZONE_ID_STRING);
-        TestRepoCloner.cloneAndBranch(config);
-    }
-
-    @AfterEach
-    public void after() {
+    public void after(RepoConfiguration config) {
         GitCheckout.checkout(config.getRepoRoot(), "master");
     }
 
     /**
      * Generates the information for test file at {@code relativePath}.
      */
-    public FileInfo generateTestFileInfo(String relativePath) {
+    public FileInfo generateTestFileInfo(RepoConfiguration config, String relativePath) {
         FileInfo fileInfo = FileInfoExtractor.generateFileInfo(config, relativePath);
 
         config.getAuthorDetailsToAuthorMap().put(MAIN_AUTHOR_NAME, new Author(MAIN_AUTHOR_NAME));
@@ -133,7 +130,7 @@ public class GitTestTemplate {
      * Generates the .git-blame-ignore-revs file containing {@link CommitHash}es
      * from {@code toIgnore} for the test repo.
      */
-    public List<CommitHash> createTestIgnoreRevsFile(List<CommitHash> toIgnore) {
+    public List<CommitHash> createTestIgnoreRevsFile(RepoConfiguration config, List<CommitHash> toIgnore) {
         List<CommitHash> expandedIgnoreCommitList = toIgnore.stream()
                 .map(CommitHash::toString)
                 .map(commitHash -> {
@@ -153,8 +150,8 @@ public class GitTestTemplate {
         new File(IGNORE_REVS_FILE_LOCATION).delete();
     }
 
-    public FileResult getFileResult(String relativePath) {
-        FileInfo fileinfo = generateTestFileInfo(relativePath);
+    public FileResult getFileResult(RepoConfiguration config, String relativePath) {
+        FileInfo fileinfo = generateTestFileInfo(config, relativePath);
         return FileInfoAnalyzer.analyzeTextFile(config, fileinfo);
     }
 

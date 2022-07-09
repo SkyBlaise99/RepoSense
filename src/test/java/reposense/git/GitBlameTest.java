@@ -3,15 +3,36 @@ package reposense.git;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 
 public class GitBlameTest extends GitTestTemplate {
-
     protected static final Pattern IGNORED_AUTHOR_PATTERN = Pattern.compile("(FH-30)");
+
+    private static final String EXTRA_OUTPUT_FOLDER_NAME = GitBlameTest.class.getSimpleName();
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeClass() throws Exception {
+        config = GitTestTemplate.beforeClass(EXTRA_OUTPUT_FOLDER_NAME);
+    }
+
+    @BeforeEach
+    public void before() throws Exception {
+        config = super.before(EXTRA_OUTPUT_FOLDER_NAME);
+    }
+
+    @AfterEach
+    public void after() {
+        super.after(config);
+    }
 
     @Test
     public void blameRaw_validFile_success() {
@@ -29,9 +50,8 @@ public class GitBlameTest extends GitTestTemplate {
         Assumptions.assumeTrue(GitVersion.isGitVersionSufficientForFindingPreviousAuthors());
         config.setBranch(TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH);
         GitCheckout.checkoutBranch(config.getRepoRoot(), TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH);
-        createTestIgnoreRevsFile(AUTHOR_TO_IGNORE_BLAME_COMMIT_LIST_07082021);
-        String content = GitBlame.blameWithPreviousAuthors(config.getRepoRoot(),
-                "blameTest.java");
+        createTestIgnoreRevsFile(config, AUTHOR_TO_IGNORE_BLAME_COMMIT_LIST_07082021);
+        String content = GitBlame.blameWithPreviousAuthors(config.getRepoRoot(), "blameTest.java");
         removeTestIgnoreRevsFile();
 
         Matcher ignoredAuthorMatcher = IGNORED_AUTHOR_PATTERN.matcher(content);
