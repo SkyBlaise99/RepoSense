@@ -115,6 +115,8 @@ test {
     doLast {
         deleteReposAddressDirectory()
     }
+
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
 }
 
 tasks.shadowJar.dependsOn(zipReport);
