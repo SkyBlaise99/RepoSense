@@ -52,7 +52,7 @@ public class GitBlameTest extends GitTestTemplate {
         GitCheckout.checkoutBranch(config.getRepoRoot(), TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH);
         createTestIgnoreRevsFile(config, AUTHOR_TO_IGNORE_BLAME_COMMIT_LIST_07082021);
         String content = GitBlame.blameWithPreviousAuthors(config.getRepoRoot(), "blameTest.java");
-        removeTestIgnoreRevsFile();
+        removeTestIgnoreRevsFile(config.getRepoRoot());
 
         Matcher ignoredAuthorMatcher = IGNORED_AUTHOR_PATTERN.matcher(content);
         Assertions.assertFalse(ignoredAuthorMatcher.find());

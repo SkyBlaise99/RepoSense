@@ -31,8 +31,7 @@ import reposense.util.TestRepoCloner;
 
 public class GitTestTemplate {
     protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/reposense/testrepo-Alpha.git";
-    protected static final String IGNORE_REVS_FILE_LOCATION =
-            "repos/reposense_testrepo-Alpha/testrepo-Alpha/.git-blame-ignore-revs";
+    protected static final String IGNORE_REVS_FILE_NAME = ".git-blame-ignore-revs";
     protected static final String TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH = "1565-find-previous-authors";
     protected static final String FIRST_COMMIT_HASH = "7d7584f";
     protected static final String ROOT_COMMIT_HASH = "fd425072e12004b71d733a58d819d845509f8db3";
@@ -142,12 +141,14 @@ public class GitTestTemplate {
                 })
                 .collect(Collectors.toList());
 
-        FileUtil.writeIgnoreRevsFile(IGNORE_REVS_FILE_LOCATION, expandedIgnoreCommitList);
+        String fileLocation = config.getRepoRoot() + IGNORE_REVS_FILE_NAME;
+        FileUtil.writeIgnoreRevsFile(fileLocation, expandedIgnoreCommitList);
         return expandedIgnoreCommitList;
     }
 
-    public void removeTestIgnoreRevsFile() {
-        new File(IGNORE_REVS_FILE_LOCATION).delete();
+    public void removeTestIgnoreRevsFile(String filePath) {
+        String fileLocation = filePath + IGNORE_REVS_FILE_NAME;
+        new File(fileLocation).delete();
     }
 
     public FileResult getFileResult(RepoConfiguration config, String relativePath) {
