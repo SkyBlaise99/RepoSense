@@ -27,7 +27,7 @@ public class RepoConfiguration {
     private String branch;
     private String displayName;
     private String outputFolderName;
-    private final String extraOutputFolderName;
+    private final transient String extraOutputFolderName;
     private transient String zoneId;
     private transient LocalDateTime sinceDate;
     private transient LocalDateTime untilDate;
