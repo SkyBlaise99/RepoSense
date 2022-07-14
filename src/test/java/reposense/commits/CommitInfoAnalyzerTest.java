@@ -37,18 +37,17 @@ public class CommitInfoAnalyzerTest extends GitTestTemplate {
     private static final FileType FILETYPE_MD = new FileType("md", Collections.singletonList("**md"));
     private static final FileType FILETYPE_TXT = new FileType("txt", Collections.singletonList("**txt"));
     private static final String DUPLICATE_AUTHORS_DUPLICATE_COMMITS_HASH = "f34c20ec2c3be63e0764d4079a575dd75269ffeb";
-    private static final String CLASS_NAME = CommitInfoAnalyzerTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
         config.getAuthorDetailsToAuthorMap().clear();
     }
 

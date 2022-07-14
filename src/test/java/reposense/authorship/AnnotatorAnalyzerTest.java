@@ -42,18 +42,17 @@ public class AnnotatorAnalyzerTest extends GitTestTemplate {
             FAKE_AUTHOR, FAKE_AUTHOR, FAKE_AUTHOR,
             UNKNOWN_AUTHOR, UNKNOWN_AUTHOR, UNKNOWN_AUTHOR
     };
-    private static final String CLASS_NAME = AnnotatorAnalyzerTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
         config.setSinceDate(SINCE_DATE);
         config.setUntilDate(UNTIL_DATE);
         config.setZoneId(TIME_ZONE_ID_STRING);

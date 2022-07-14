@@ -75,18 +75,17 @@ public class FileAnalyzerTest extends GitTestTemplate {
     private static final Author[] EXPECTED_LINE_AUTHORS_PREVIOUS_AUTHORS_BLAME_TEST = {
             MAIN_AUTHOR, MAIN_AUTHOR, FAKE_AUTHOR, MAIN_AUTHOR
     };
-    private static final String CLASS_NAME = FileAnalyzerTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
         config.setZoneId(TIME_ZONE_ID_STRING);
     }
 

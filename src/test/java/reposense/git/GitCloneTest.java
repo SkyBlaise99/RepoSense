@@ -14,18 +14,17 @@ import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 
 public class GitCloneTest extends GitTestTemplate {
-    private static final String CLASS_NAME = GitCloneTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach

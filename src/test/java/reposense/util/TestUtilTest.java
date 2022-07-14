@@ -19,7 +19,6 @@ public class TestUtilTest {
     private static final String PATH_SPACE_TEST = DIRECTORY_NAME + "/space test.txt";
     private static final String PATH_SYMBOLS_TEST = DIRECTORY_NAME + "/symbols +-,.;'[]{}~`!@#$%^&()_-+=test.txt";
 
-
     @Test
     public void loadResource_validFileWithNoSpecialCharacters_success() throws Exception {
         Path path = loadResource(TestUtilTest.class, PATH_NO_SPECIAL_CHAR_TEST);

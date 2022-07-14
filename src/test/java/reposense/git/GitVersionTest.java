@@ -17,18 +17,17 @@ import reposense.template.GitTestTemplate;
 public class GitVersionTest extends GitTestTemplate {
     protected static final Pattern VALID_GIT_VERSION_PATTERN = Pattern.compile("git.* (\\d+.\\d+.\\d+).*");
 
-    private static final String CLASS_NAME = GitVersionTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach

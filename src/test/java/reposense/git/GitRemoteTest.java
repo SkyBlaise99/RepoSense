@@ -23,18 +23,17 @@ class GitRemoteTest extends GitTestTemplate {
     private static final String NON_ORIGIN_PUSH_REMOTE_NAME_1 = "testrepo(push)";
     private static final String NON_ORIGIN_FETCH_REMOTE_NAME_2 = "testrepo2(fetch)";
     private static final String NON_ORIGIN_PUSH_REMOTE_NAME_2 = "testrepo2(push)";
-    private static final String CLASS_NAME = GitRemoteTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach

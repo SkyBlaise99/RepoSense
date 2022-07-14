@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import reposense.authorship.FileInfoAnalyzer;
@@ -88,18 +89,21 @@ public class GitTestTemplate {
     protected static final Author MAIN_AUTHOR = new Author(MAIN_AUTHOR_NAME);
     protected static final Author FAKE_AUTHOR = new Author(FAKE_AUTHOR_NAME);
 
-    protected static RepoConfiguration beforeClass(String extraOutputFolderName) throws Exception {
-        RepoConfiguration config = newRepoConfigTemplate(extraOutputFolderName);
+    private static final Supplier<String> EXTRA_OUTPUT_FOLDER_NAME_SUPPLIER =
+            () -> String.valueOf(Thread.currentThread().getId());
+
+    protected static RepoConfiguration beforeClass() throws Exception {
+        RepoConfiguration config = newRepoConfigTemplate();
 
         config.setZoneId(TIME_ZONE_ID_STRING);
 
-        TestRepoCloner.cloneAndBranch(config, extraOutputFolderName);
+        TestRepoCloner.cloneAndBranch(config, EXTRA_OUTPUT_FOLDER_NAME_SUPPLIER.get());
 
         return config;
     }
 
-    protected RepoConfiguration before(String extraOutputFolderName) throws Exception {
-        RepoConfiguration config = newRepoConfigTemplate(extraOutputFolderName);
+    protected RepoConfiguration before() throws Exception {
+        RepoConfiguration config = newRepoConfigTemplate();
 
         config.setAuthorList(Collections.singletonList(getAlphaAllAliasAuthor()));
         config.setFormats(FileTypeTest.DEFAULT_TEST_FORMATS);
@@ -109,8 +113,9 @@ public class GitTestTemplate {
         return config;
     }
 
-    private static RepoConfiguration newRepoConfigTemplate(String extraOutputFolderName) throws Exception {
-        return new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master", extraOutputFolderName);
+    private static RepoConfiguration newRepoConfigTemplate() throws Exception {
+        return new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master",
+                EXTRA_OUTPUT_FOLDER_NAME_SUPPLIER.get());
     }
 
     protected void after(RepoConfiguration config) {

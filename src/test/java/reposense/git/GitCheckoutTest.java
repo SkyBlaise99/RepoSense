@@ -18,20 +18,18 @@ import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 import reposense.util.TestUtil;
 
-
 public class GitCheckoutTest extends GitTestTemplate {
-    private static final String CLASS_NAME = GitCheckoutTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach

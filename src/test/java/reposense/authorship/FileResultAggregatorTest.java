@@ -26,18 +26,17 @@ public class FileResultAggregatorTest extends GitTestTemplate {
             TestUtil.getSinceDate(2017, Month.JANUARY.getValue(), 1);
     private static final LocalDateTime CLEAR_FILE_LINES_UNTIL_DATE =
             TestUtil.getUntilDate(2022, Month.MARCH.getValue(), 8);
-    private static final String CLASS_NAME = FileResultAggregatorTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach

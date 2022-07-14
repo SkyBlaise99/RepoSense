@@ -41,18 +41,17 @@ public class FileInfoExtractorTest extends GitTestTemplate {
             "1647-FileAnalyzerTest-analyzeTextFile_fileExceedingFileSizeLimit_success";
     private static final String FILE_WITH_LARGE_SIZE = "largeFile.json";
     private static final String FEBRUARY_EIGHT_COMMIT_HASH = "768015345e70f06add2a8b7d1f901dc07bf70582";
-    private static final String CLASS_NAME = FileInfoExtractorTest.class.getSimpleName();
 
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach

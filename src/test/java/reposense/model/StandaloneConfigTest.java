@@ -42,20 +42,19 @@ public class StandaloneConfigTest extends GitTestTemplate {
     private static final List<Author> AUTHOR_CONFIG_SPECIAL_CHARACTER_AUTHORS = Arrays.asList(
             FIRST_SPECIAL_CHARACTER_AUTHOR, SECOND_SPECIAL_CHARACTER_AUTHOR, THIRD_SPECIAL_CHARACTER_AUTHOR);
     private static final long FILE_SIZE_LIMIT = 100000;
-    private static final String CLASS_NAME = StandaloneConfigTest.class.getSimpleName();
 
     private static StandaloneConfig validStandaloneConfig;
     private static RepoConfiguration config;
 
     @BeforeAll
     public static void beforeAll() throws Exception {
-        config = beforeClass(CLASS_NAME);
+        config = beforeClass();
         validStandaloneConfig = new StandaloneConfigJsonParser().parse(VALID_CONFIG);
     }
 
     @BeforeEach
     public void beforeEach() throws Exception {
-        config = super.before(CLASS_NAME);
+        config = super.before();
     }
 
     @AfterEach
