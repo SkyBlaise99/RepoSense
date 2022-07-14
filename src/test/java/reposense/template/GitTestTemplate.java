@@ -31,8 +31,7 @@ import reposense.util.TestRepoCloner;
 
 public class GitTestTemplate {
     protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/reposense/testrepo-Alpha.git";
-    protected static final String IGNORE_REVS_FILE_LOCATION =
-            "repos/reposense_testrepo-Alpha/testrepo-Alpha/.git-blame-ignore-revs";
+    protected static final String IGNORE_REVS_FILE_NAME = ".git-blame-ignore-revs";
     protected static final String TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH = "1565-find-previous-authors";
     protected static final String FIRST_COMMIT_HASH = "7d7584f";
     protected static final String ROOT_COMMIT_HASH = "fd425072e12004b71d733a58d819d845509f8db3";
@@ -89,8 +88,18 @@ public class GitTestTemplate {
     protected static final Author MAIN_AUTHOR = new Author(MAIN_AUTHOR_NAME);
     protected static final Author FAKE_AUTHOR = new Author(FAKE_AUTHOR_NAME);
 
-    public RepoConfiguration before(String extraOutputFolderName) throws Exception {
-        RepoConfiguration config = newRepoConfig(extraOutputFolderName);
+    protected static RepoConfiguration beforeClass(String extraOutputFolderName) throws Exception {
+        RepoConfiguration config = newRepoConfigTemplate(extraOutputFolderName);
+
+        config.setZoneId(TIME_ZONE_ID_STRING);
+
+        TestRepoCloner.cloneAndBranch(config, extraOutputFolderName);
+
+        return config;
+    }
+
+    protected RepoConfiguration before(String extraOutputFolderName) throws Exception {
+        RepoConfiguration config = newRepoConfigTemplate(extraOutputFolderName);
 
         config.setAuthorList(Collections.singletonList(getAlphaAllAliasAuthor()));
         config.setFormats(FileTypeTest.DEFAULT_TEST_FORMATS);
@@ -100,21 +109,11 @@ public class GitTestTemplate {
         return config;
     }
 
-    public static RepoConfiguration beforeClass(String extraOutputFolderName) throws Exception {
-        RepoConfiguration config = newRepoConfig(extraOutputFolderName);
-
-        config.setZoneId(TIME_ZONE_ID_STRING);
-
-        TestRepoCloner.cloneAndBranch(config, extraOutputFolderName);
-
-        return config;
-    }
-
-    private static RepoConfiguration newRepoConfig(String extraOutputFolderName) throws Exception {
+    private static RepoConfiguration newRepoConfigTemplate(String extraOutputFolderName) throws Exception {
         return new RepoConfiguration(new RepoLocation(TEST_REPO_GIT_LOCATION), "master", extraOutputFolderName);
     }
 
-    public void after(RepoConfiguration config) {
+    protected void after(RepoConfiguration config) {
         GitCheckout.checkout(config.getRepoRoot(), "master");
     }
 
@@ -135,24 +134,26 @@ public class GitTestTemplate {
      * Generates the .git-blame-ignore-revs file containing {@link CommitHash}es
      * from {@code toIgnore} for the test repo.
      */
-    public List<CommitHash> createTestIgnoreRevsFile(List<CommitHash> toIgnore, RepoConfiguration config) {
+    public List<CommitHash> createTestIgnoreRevsFile(List<CommitHash> toIgnore, String repoRoot) {
         List<CommitHash> expandedIgnoreCommitList = toIgnore.stream()
                 .map(CommitHash::toString)
                 .map(commitHash -> {
                     try {
-                        return GitShow.getExpandedCommitHash(config.getRepoRoot(), commitHash);
+                        return GitShow.getExpandedCommitHash(repoRoot, commitHash);
                     } catch (CommitNotFoundException e) {
                         return new CommitHash(commitHash);
                     }
                 })
                 .collect(Collectors.toList());
 
-        FileUtil.writeIgnoreRevsFile(IGNORE_REVS_FILE_LOCATION, expandedIgnoreCommitList);
+        String filePath = repoRoot + IGNORE_REVS_FILE_NAME;
+        FileUtil.writeIgnoreRevsFile(filePath, expandedIgnoreCommitList);
         return expandedIgnoreCommitList;
     }
 
-    public void removeTestIgnoreRevsFile() {
-        new File(IGNORE_REVS_FILE_LOCATION).delete();
+    public void removeTestIgnoreRevsFile(String repoRoot) {
+        String filePath = repoRoot + IGNORE_REVS_FILE_NAME;
+        new File(filePath).delete();
     }
 
     public FileResult getFileResult(RepoConfiguration config, String relativePath) {
