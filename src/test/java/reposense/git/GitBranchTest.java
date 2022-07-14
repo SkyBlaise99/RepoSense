@@ -1,6 +1,9 @@
 package reposense.git;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import reposense.model.FileTypeTest;
@@ -11,9 +14,27 @@ import reposense.util.TestRepoCloner;
 
 
 public class GitBranchTest extends GitTestTemplate {
-
     protected static final String TEST_REPO_UNCOMMON_DEFAULT_GIT_LOCATION =
             "https://github.com/reposense/testrepo-UncommonDefaultBranch.git";
+
+    private static final String CLASS_NAME = GitBranchTest.class.getSimpleName();
+
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        super.after(config);
+    }
 
     @Test
     public void getCurrentBranch_masterBranch_success() throws Exception {

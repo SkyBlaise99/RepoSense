@@ -3,13 +3,35 @@ package reposense.git;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import reposense.git.exception.CommitNotFoundException;
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 
 public class GitCatFileTest extends GitTestTemplate {
+    private static final String CLASS_NAME = GitCatFileTest.class.getSimpleName();
+
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        super.after(config);
+    }
 
     @Test
     public void getParentCommits_normalCommit_success() throws Exception {

@@ -9,6 +9,7 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,7 @@ import reposense.authorship.model.FileInfo;
 import reposense.authorship.model.FileResult;
 import reposense.model.Author;
 import reposense.model.AuthorConfiguration;
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 import reposense.util.TestUtil;
 
@@ -40,20 +42,29 @@ public class AnnotatorAnalyzerTest extends GitTestTemplate {
             FAKE_AUTHOR, FAKE_AUTHOR, FAKE_AUTHOR,
             UNKNOWN_AUTHOR, UNKNOWN_AUTHOR, UNKNOWN_AUTHOR
     };
+    private static final String CLASS_NAME = AnnotatorAnalyzerTest.class.getSimpleName();
 
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
 
     @BeforeEach
-    public void before() throws Exception {
-        super.before();
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
         config.setSinceDate(SINCE_DATE);
         config.setUntilDate(UNTIL_DATE);
         config.setZoneId(TIME_ZONE_ID_STRING);
+
         AuthorConfiguration.setHasAuthorConfigFile(AuthorConfiguration.DEFAULT_HAS_AUTHOR_CONFIG_FILE);
     }
 
     @AfterEach
-    public void after() {
-        super.after();
+    public void afterEach() {
+        super.after(config);
+
         AuthorConfiguration.setHasAuthorConfigFile(AuthorConfiguration.DEFAULT_HAS_AUTHOR_CONFIG_FILE);
     }
 

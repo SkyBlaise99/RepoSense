@@ -10,13 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import reposense.authorship.model.FileInfo;
 import reposense.git.GitCheckout;
 import reposense.model.Author;
 import reposense.model.FileTypeTest;
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 import reposense.util.TestUtil;
 
@@ -25,7 +29,6 @@ public class FileInfoExtractorTest extends GitTestTemplate {
     private static final Path FILE_WITH_SPECIAL_CHARACTER = TEST_DATA_FOLDER.resolve("fileWithSpecialCharacters.txt");
     private static final Path FILE_WITHOUT_SPECIAL_CHARACTER = TEST_DATA_FOLDER
             .resolve("fileWithoutSpecialCharacters.txt");
-
     private static final String EDITED_FILE_INFO_BRANCH = "getEditedFileInfos-test";
     private static final String DIRECTORY_WITH_VALID_WHITELISTED_NAME_BRANCH = "directory-with-valid-whitelisted-name";
     private static final String BRANCH_WITH_VALID_WHITELISTED_FILE_NAME_BRANCH =
@@ -37,8 +40,25 @@ public class FileInfoExtractorTest extends GitTestTemplate {
     private static final String BRANCH_WITH_LARGE_FILE =
             "1647-FileAnalyzerTest-analyzeTextFile_fileExceedingFileSizeLimit_success";
     private static final String FILE_WITH_LARGE_SIZE = "largeFile.json";
-
     private static final String FEBRUARY_EIGHT_COMMIT_HASH = "768015345e70f06add2a8b7d1f901dc07bf70582";
+    private static final String CLASS_NAME = FileInfoExtractorTest.class.getSimpleName();
+
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        super.after(config);
+    }
 
     @Test
     public void extractFileInfosTest() {

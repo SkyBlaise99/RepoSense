@@ -7,19 +7,40 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 
 class GitRemoteTest extends GitTestTemplate {
-
     private static final String REMOTE_URL_ORIGIN = "https://github.com/reposense/RepoSense.git";
     private static final String REMOTE_URL_NON_ORIGIN = "https://github.com/TestSenseRepo/RepoSense.git";
     private static final String NON_ORIGIN_FETCH_REMOTE_NAME_1 = "testrepo(fetch)";
     private static final String NON_ORIGIN_PUSH_REMOTE_NAME_1 = "testrepo(push)";
     private static final String NON_ORIGIN_FETCH_REMOTE_NAME_2 = "testrepo2(fetch)";
     private static final String NON_ORIGIN_PUSH_REMOTE_NAME_2 = "testrepo2(push)";
+    private static final String CLASS_NAME = GitRemoteTest.class.getSimpleName();
+
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        super.after(config);
+    }
 
     @Test
     void getRemotes_singleOriginRemote_success() {

@@ -5,13 +5,36 @@ import static reposense.git.GitVersion.isGitVersionOutputAtLeastVersion;
 
 import java.util.regex.Pattern;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 
 public class GitVersionTest extends GitTestTemplate {
     protected static final Pattern VALID_GIT_VERSION_PATTERN = Pattern.compile("git.* (\\d+.\\d+.\\d+).*");
+
+    private static final String CLASS_NAME = GitVersionTest.class.getSimpleName();
+
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        super.after(config);
+    }
 
     @Test
     public void gitVersionRaw_validGitVersion_success() {

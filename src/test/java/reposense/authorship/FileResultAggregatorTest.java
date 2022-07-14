@@ -8,21 +8,42 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import reposense.authorship.model.FileInfo;
 import reposense.authorship.model.FileResult;
 import reposense.git.GitCheckout;
+import reposense.model.RepoConfiguration;
 import reposense.template.GitTestTemplate;
 import reposense.util.TestUtil;
 
 public class FileResultAggregatorTest extends GitTestTemplate {
-
     private static final LocalDateTime CLEAR_FILE_LINES_SINCE_DATE =
             TestUtil.getSinceDate(2017, Month.JANUARY.getValue(), 1);
     private static final LocalDateTime CLEAR_FILE_LINES_UNTIL_DATE =
             TestUtil.getUntilDate(2022, Month.MARCH.getValue(), 8);
+    private static final String CLASS_NAME = FileResultAggregatorTest.class.getSimpleName();
+
+    private static RepoConfiguration config;
+
+    @BeforeAll
+    public static void beforeAll() throws Exception {
+        config = beforeClass(CLASS_NAME);
+    }
+
+    @BeforeEach
+    public void beforeEach() throws Exception {
+        config = super.before(CLASS_NAME);
+    }
+
+    @AfterEach
+    public void afterEach() {
+        super.after(config);
+    }
 
     @Test
     public void aggregateFileResult_clearFileLines_success() {
