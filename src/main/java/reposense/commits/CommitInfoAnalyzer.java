@@ -63,7 +63,7 @@ public class CommitInfoAnalyzer {
      * specified to be ignored or the author is inside {@code config}.
      */
     public static List<CommitResult> analyzeCommits(List<CommitInfo> commitInfos, RepoConfiguration config) {
-        logger.info(String.format(MESSAGE_START_ANALYZING_COMMIT_INFO, config.getLocation(), config.getBranch()));
+        logger.finer(String.format(MESSAGE_START_ANALYZING_COMMIT_INFO, config.getLocation(), config.getBranch()));
 
         return commitInfos.stream()
                 .map(commitInfo -> analyzeCommit(commitInfo, config))

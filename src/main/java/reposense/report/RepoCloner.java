@@ -182,7 +182,7 @@ public class RepoCloner {
 
             Files.createDirectories(repoDirectoryPath);
 
-            logger.info(String.format(MESSAGE_START_CLONING, config.getLocation()));
+            logger.fine(String.format(MESSAGE_START_CLONING, config.getLocation()));
 
             Path outputDirectory = Paths.get(repoDirectoryPath.toString(),
                     FileUtil.getBareRepoFolderName(config));
@@ -319,7 +319,7 @@ public class RepoCloner {
                 return true;
             }
 
-            logger.info(String.format(MESSAGE_WAITING_FOR_CLONING, config.getLocation()));
+            logger.finer(String.format(MESSAGE_WAITING_FOR_CLONING, config.getLocation()));
             crp.waitForProcess();
             logger.info(String.format(MESSAGE_COMPLETE_CLONING, config.getLocation()));
         } catch (RuntimeException | CommandRunnerProcessException e) {

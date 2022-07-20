@@ -60,7 +60,7 @@ public class FileInfoExtractor {
      * Extracts a list of relevant non-binary files given in {@code config}.
      */
     public static List<FileInfo> extractTextFileInfos(RepoConfiguration config) {
-        logger.info(String.format(MESSAGE_START_EXTRACTING_FILE_INFO, config.getLocation(), config.getBranch()));
+        logger.finer(String.format(MESSAGE_START_EXTRACTING_FILE_INFO, config.getLocation(), config.getBranch()));
 
         List<FileInfo> fileInfos = new ArrayList<>();
 

@@ -326,7 +326,7 @@ public class ReportGenerator {
             configToAnalyze.updateBranch(cloneJobOutput.getDefaultBranch());
 
             Path repoReportDirectory = Paths.get(outputPath, configToAnalyze.getOutputFolderName());
-            logger.info(
+            logger.fine(
                     String.format(progressTracker.getProgress() + " "
                             + MESSAGE_START_ANALYSIS, configToAnalyze.getLocation(), configToAnalyze.getBranch()));
             try {
