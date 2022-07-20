@@ -29,8 +29,8 @@ public class LogsManager {
     private static final String LOG_FILE_NAME = "reposense.log";
 
     private static Path logFolderLocation;
-    private static Level currentConsoleLogLevel = Level.INFO;
-    private static Level currentFileLogLevel = Level.INFO;
+    private static Level currentConsoleLogLevel = Level.FINE;
+    private static final Level currentFileLogLevel = Level.ALL;
     private static FileHandler fileHandler;
     private static ConsoleHandler consoleHandler;
 
