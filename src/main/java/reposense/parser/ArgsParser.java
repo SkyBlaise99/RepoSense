@@ -41,26 +41,29 @@ public class ArgsParser {
     public static final int DEFAULT_NUM_CLONING_THREADS = 4;
     public static final int DEFAULT_NUM_ANALYSIS_THREADS = Runtime.getRuntime().availableProcessors();
 
-    public static final String[] HELP_FLAGS = new String[]{"--help", "-h"};
-    public static final String[] CONFIG_FLAGS = new String[]{"--config", "-c"};
-    public static final String[] REPO_FLAGS = new String[]{"--repo", "--repos", "-r"};
-    public static final String[] VIEW_FLAGS = new String[]{"--view", "-v"};
-    public static final String[] OUTPUT_FLAGS = new String[]{"--output", "-o"};
-    public static final String[] ASSETS_FLAGS = new String[]{"--assets", "-a"};
-    public static final String[] SINCE_FLAGS = new String[]{"--since", "-s"};
-    public static final String[] UNTIL_FLAGS = new String[]{"--until", "-u"};
-    public static final String[] PERIOD_FLAGS = new String[]{"--period", "-p"};
-    public static final String[] SHALLOW_CLONING_FLAGS = new String[]{"--shallow-cloning", "-S"};
-    public static final String[] FORMAT_FLAGS = new String[]{"--formats", "-f"};
-    public static final String[] IGNORE_CONFIG_FLAGS = new String[]{"--ignore-standalone-config", "-i"};
-    public static final String[] IGNORE_SIZELIMIT_FLAGS = new String[]{"--ignore-filesize-limit", "-I"};
-    public static final String[] TIMEZONE_FLAGS = new String[]{"--timezone", "-t"};
-    public static final String[] VERSION_FLAGS = new String[]{"--version", "-V"};
-    public static final String[] LAST_MODIFIED_DATE_FLAGS = new String[]{"--last-modified-date", "-l"};
-    public static final String[] FIND_PREVIOUS_AUTHORS_FLAGS = new String[]{"--find-previous-authors", "-F"};
+    public static final String[] HELP_FLAGS = new String[] {"--help", "-h"};
+    public static final String[] CONFIG_FLAGS = new String[] {"--config", "-c"};
+    public static final String[] REPO_FLAGS = new String[] {"--repo", "--repos", "-r"};
+    public static final String[] VIEW_FLAGS = new String[] {"--view", "-v"};
+    public static final String[] OUTPUT_FLAGS = new String[] {"--output", "-o"};
+    public static final String[] ASSETS_FLAGS = new String[] {"--assets", "-a"};
+    public static final String[] SINCE_FLAGS = new String[] {"--since", "-s"};
+    public static final String[] UNTIL_FLAGS = new String[] {"--until", "-u"};
+    public static final String[] PERIOD_FLAGS = new String[] {"--period", "-p"};
+    public static final String[] SHALLOW_CLONING_FLAGS = new String[] {"--shallow-cloning", "-S"};
+    public static final String[] FORMAT_FLAGS = new String[] {"--formats", "-f"};
+    public static final String[] IGNORE_CONFIG_FLAGS = new String[] {"--ignore-standalone-config", "-i"};
+    public static final String[] IGNORE_SIZELIMIT_FLAGS = new String[] {"--ignore-filesize-limit", "-I"};
+    public static final String[] TIMEZONE_FLAGS = new String[] {"--timezone", "-t"};
+    public static final String[] VERSION_FLAGS = new String[] {"--version", "-V"};
+    public static final String[] LAST_MODIFIED_DATE_FLAGS = new String[] {"--last-modified-date", "-l"};
+    public static final String[] FIND_PREVIOUS_AUTHORS_FLAGS = new String[] {"--find-previous-authors", "-F"};
 
-    public static final String[] CLONING_THREADS_FLAG = new String[]{"--cloning-threads"};
-    public static final String[] ANALYSIS_THREADS_FLAG = new String[]{"--analysis-threads"};
+    public static final String[] CLONING_THREADS_FLAG = new String[] {"--cloning-threads"};
+    public static final String[] ANALYSIS_THREADS_FLAG = new String[] {"--analysis-threads"};
+
+    public static final String[] QUIET_MODE_FLAGS = new String[] {"--quiet", "-q"};
+    public static final String[] DEBUG_MODE_FLAGS = new String[] {"--debug", "-d"};
 
     private static final Logger logger = LogsManager.getLogger(ArgsParser.class);
 
@@ -94,6 +97,10 @@ public class ArgsParser {
                 .required(false);
 
         MutuallyExclusiveGroup mutexParser2 = parser
+                .addMutuallyExclusiveGroup(MESSAGE_HEADER_MUTEX)
+                .required(false);
+
+        MutuallyExclusiveGroup mutexParser3 = parser
                 .addMutuallyExclusiveGroup(MESSAGE_HEADER_MUTEX)
                 .required(false);
 
@@ -228,6 +235,16 @@ public class ArgsParser {
                 .type(new AnalysisThreadsArgumentType())
                 .setDefault(DEFAULT_NUM_ANALYSIS_THREADS)
                 .help(FeatureControl.SUPPRESS);
+
+        mutexParser3.addArgument(QUIET_MODE_FLAGS)
+                .dest(QUIET_MODE_FLAGS[0])
+                .action(Arguments.storeTrue())
+                .help("A flag to enable quiet mode for logging.");
+
+        mutexParser3.addArgument(DEBUG_MODE_FLAGS)
+                .dest(DEBUG_MODE_FLAGS[0])
+                .action(Arguments.storeTrue())
+                .help("A flag to enable debug mode for logging.");
 
         return parser;
     }
