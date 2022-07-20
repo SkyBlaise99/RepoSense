@@ -15,7 +15,8 @@ public class InputBuilder {
     private StringBuilder input;
 
     public InputBuilder() {
-        this.input = new StringBuilder();
+        input = new StringBuilder();
+        addDebugMode();
     }
 
     /**
@@ -198,6 +199,24 @@ public class InputBuilder {
      */
     public InputBuilder addFindPreviousAuthors() {
         input.append(ArgsParser.FIND_PREVIOUS_AUTHORS_FLAGS[0] + WHITESPACE);
+        return this;
+    }
+
+    /**
+     * Adds the flag to enable quiet mode for logging.
+     * This method should only be called once in one build.
+     */
+    public InputBuilder addQuietMode() {
+        input.append(ArgsParser.QUIET_MODE_FLAGS[0] + WHITESPACE);
+        return this;
+    }
+
+    /**
+     * Adds the flag to enable debug mode for logging.
+     * This method should only be called once in one build.
+     */
+    public InputBuilder addDebugMode() {
+        input.append(ArgsParser.DEBUG_MODE_FLAGS[0] + WHITESPACE);
         return this;
     }
 
