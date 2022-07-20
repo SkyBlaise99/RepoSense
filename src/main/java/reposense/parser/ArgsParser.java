@@ -306,6 +306,15 @@ public class ArgsParser {
             int numCloningThreads = results.get(CLONING_THREADS_FLAG[0]);
             int numAnalysisThreads = results.get(ANALYSIS_THREADS_FLAG[0]);
 
+            boolean isQuietModeEnabled = results.get(QUIET_MODE_FLAGS[0]);
+            boolean isDebugModeEnabled = results.get(DEBUG_MODE_FLAGS[0]);
+
+            if (isQuietModeEnabled) {
+                LogsManager.enableQuietMode();
+            } else if (isDebugModeEnabled) {
+                LogsManager.enableDebugMode();
+            }
+
             LocalDateTime currentDate = TimeUtil.getCurrentDate(zoneId);
 
             if (isSinceDateProvided) {
