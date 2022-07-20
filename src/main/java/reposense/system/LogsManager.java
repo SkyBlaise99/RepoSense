@@ -133,5 +133,20 @@ public class LogsManager {
         logFolderLocation = location;
         LOGGER_LIST.stream().forEach(logger -> addFileHandler(logger));
     }
-}
 
+    public static void enableQuietMode() {
+        currentConsoleLogLevel = Level.INFO;
+        refreshConsoleHandler();
+    }
+
+    public static void enableDebugMode() {
+        currentConsoleLogLevel = Level.FINER;
+        refreshConsoleHandler();
+    }
+
+    private static void refreshConsoleHandler() {
+        if (consoleHandler != null) {
+            consoleHandler.setLevel(currentConsoleLogLevel);
+        }
+    }
+}
