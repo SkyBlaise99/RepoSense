@@ -239,12 +239,24 @@ public class AuthorConfiguration {
     }
 
     /**
-     * Adds {@code values} as aliases of {@code author} into the map.
+     * Adds {@code aliases} of {@code author} into the map.
      */
-    public void addAuthorDetailsToAuthorMapEntry(Author author, List<String> values) {
-        values.forEach(value -> {
-            checkDuplicateAliases(authorDetailsToAuthorMap, value, author.getGitId());
-            authorDetailsToAuthorMap.put(value, author);
+    public void addAuthorAliasesToAuthorMapEntry(Author author, List<String> aliases) {
+        aliases.stream()
+                .map(String::toLowerCase)
+                .forEach(alias -> {
+                    checkDuplicateAliases(authorDetailsToAuthorMap, alias, author.getGitId());
+                    authorDetailsToAuthorMap.put(alias, author);
+                });
+    }
+
+    /**
+     * Adds {@code emails} of {@code author} into the map.
+     */
+    public void addAuthorEmailsToAuthorMapEntry(Author author, List<String> emails) {
+        emails.forEach(email -> {
+            checkDuplicateAliases(authorDetailsToAuthorMap, email, author.getGitId());
+            authorDetailsToAuthorMap.put(email, author);
         });
     }
 
