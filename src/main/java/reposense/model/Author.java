@@ -5,6 +5,7 @@ import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a Git Author.
@@ -31,7 +32,7 @@ public class Author {
     private transient PathMatcher ignoreGlobMatcher;
 
     public Author(String gitId) {
-        this.gitId = gitId;
+        this.gitId = gitId.toLowerCase();
         this.emails = new ArrayList<>();
         this.displayName = gitId;
         this.authorAliases = new ArrayList<>();
@@ -118,7 +119,7 @@ public class Author {
     }
 
     public void setAuthorAliases(List<String> authorAliases) {
-        this.authorAliases = authorAliases;
+        this.authorAliases = authorAliases.stream().map(String::toLowerCase).distinct().collect(Collectors.toList());
     }
 
     public List<String> getIgnoreGlobList() {
@@ -197,4 +198,3 @@ public class Author {
         }
     }
 }
-

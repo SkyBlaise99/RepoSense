@@ -2,6 +2,7 @@ package reposense.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents an author in {@link StandaloneConfig}.
@@ -14,7 +15,7 @@ public class StandaloneAuthor {
     private List<String> ignoreGlobList;
 
     public String getGithubId() {
-        return githubId;
+        return githubId.toLowerCase();
     }
 
     public List<String> getEmails() {
@@ -26,7 +27,8 @@ public class StandaloneAuthor {
     }
 
     public List<String> getAuthorNames() {
-        return (authorNames == null) ? Collections.emptyList() : authorNames;
+        return (authorNames == null) ? Collections.emptyList() :
+                authorNames.stream().map(String::toLowerCase).distinct().collect(Collectors.toList());
     }
 
     public List<String> getIgnoreGlobList() {
@@ -44,7 +46,7 @@ public class StandaloneAuthor {
         }
 
         StandaloneAuthor otherStandaloneAuthor = (StandaloneAuthor) other;
-        return githubId.equals(otherStandaloneAuthor.githubId)
+        return getGithubId().equals(otherStandaloneAuthor.getGithubId())
                 && getEmails().equals(otherStandaloneAuthor.getEmails())
                 && getDisplayName().equals(otherStandaloneAuthor.getDisplayName())
                 && getAuthorNames().equals(otherStandaloneAuthor.getAuthorNames())
