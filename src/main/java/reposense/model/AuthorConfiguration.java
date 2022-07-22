@@ -124,11 +124,11 @@ public class AuthorConfiguration {
      * and display name.
      */
     private void setAuthorDetails(Author author) {
-        // Set GitHub Id and its corresponding email as default
-        addAuthorDetailsToAuthorMapEntry(author, Arrays.asList(author.getGitId()));
+        // Set GitHub ID and its corresponding email as default
+        addAuthorAliasesToAuthorMapEntry(author, Arrays.asList(author.getGitId()));
+        addAuthorAliasesToAuthorMapEntry(author, author.getAuthorAliases());
 
-        addAuthorDetailsToAuthorMapEntry(author, author.getAuthorAliases());
-        addAuthorDetailsToAuthorMapEntry(author, author.getEmails());
+        addAuthorEmailsToAuthorMapEntry(author, author.getEmails());
 
         setAuthorDisplayName(author, author.getDisplayName());
     }
