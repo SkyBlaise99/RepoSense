@@ -163,6 +163,8 @@ public class AuthorConfiguration {
         for (String author : ignoredAuthorsList) {
             if (authorDetailsToAuthorMap.containsKey(author)) {
                 removeAuthorInformation(author);
+            } else if (authorDetailsToAuthorMap.containsKey(author.toLowerCase())) {
+                removeAuthorInformation(author.toLowerCase());
             }
         }
     }
