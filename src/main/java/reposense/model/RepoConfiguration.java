@@ -567,8 +567,20 @@ public class RepoConfiguration {
         authorConfig.setAuthorDisplayName(author, displayName);
     }
 
-    public void addAuthorDetailsToAuthorMapEntry(Author author, List<String> values) {
-        authorConfig.addAuthorDetailsToAuthorMapEntry(author, values);
+    public void addAuthorAliasToAuthorMapEntry(String alias, Author author) {
+        getAuthorDetailsToAuthorMap().put(alias.toLowerCase(), author);
+    }
+
+    public void addAuthorAliasesToAuthorMapEntry(Author author, List<String> aliases) {
+        authorConfig.addAuthorAliasesToAuthorMapEntry(author, aliases);
+    }
+
+    public void addAuthorEmailToAuthorMapEntry(String email, Author author) {
+        getAuthorDetailsToAuthorMap().put(email, author);
+    }
+
+    public void addAuthorEmailsToAuthorMapEntry(Author author, List<String> emails) {
+        authorConfig.addAuthorEmailsToAuthorMapEntry(author, emails);
     }
 
     public String getDisplayName() {
