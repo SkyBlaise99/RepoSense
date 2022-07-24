@@ -201,8 +201,11 @@ public class AuthorConfigParserTest {
         Assertions.assertEquals(AUTHOR_DISPLAY_NAME_COMMAS_AND_DOUBLE_QUOTES_MAP, config.getAuthorDisplayNameMap());
 
         Assertions.assertEquals(AUTHOR_ALIAS_COMMAS_AND_DOUBLE_QUOTES_MAP.size(), config.getAuthorList().size());
-        config.getAuthorList().forEach(author -> {
-            Assertions.assertEquals(AUTHOR_ALIAS_COMMAS_AND_DOUBLE_QUOTES_MAP.get(author), author.getAuthorAliases());
-        });
+        config.getAuthorList().forEach(author -> Assertions.assertEquals(
+                AUTHOR_ALIAS_COMMAS_AND_DOUBLE_QUOTES_MAP.get(author)
+                        .stream()
+                        .map(String::toLowerCase)
+                        .collect(Collectors.toList()),
+                author.getAuthorAliases()));
     }
 }
