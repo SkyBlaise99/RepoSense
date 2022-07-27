@@ -1,5 +1,6 @@
 package reposense;
 
+import static org.apache.tools.ant.types.Commandline.translateCommandline;
 import static reposense.util.TestUtil.loadResource;
 
 import java.nio.file.Path;
@@ -14,8 +15,10 @@ import org.junit.jupiter.api.Test;
 import reposense.model.RepoConfiguration;
 import reposense.model.RepoLocation;
 import reposense.model.SupportedDomainUrlMap;
+import reposense.parser.SinceDateArgumentType;
 import reposense.report.ErrorSummary;
 import reposense.util.FileUtil;
+import reposense.util.InputBuilder;
 import reposense.util.SystemTestUtil;
 import reposense.util.TestRepoCloner;
 
@@ -61,17 +64,23 @@ public class LocalRepoSystemTest {
 
     @Test
     public void testSameFinalDirectory() {
-        String cliInput = String.format("-r %s %s -s d1 -u %s -o %s -t %s",
-                LOCAL_DIRECTORY_ONE, LOCAL_DIRECTORY_TWO, LAST_COMMIT_DATE, OUTPUT_DIRECTORY, TIME_ZONE);
-        runTest(cliInput, "LocalRepoSystemTest/testSameFinalDirectory");
+        InputBuilder inputBuilder = getInputBuilder().addRepos(LOCAL_DIRECTORY_ONE, LOCAL_DIRECTORY_TWO);
+        runTest(inputBuilder.build(), "LocalRepoSystemTest/testSameFinalDirectory");
     }
 
     @Test
     public void testRelativePathing() {
         String relativePathForTesting = "parent1/../parent1/./test-repo";
-        String cliInput = String.format("-r %s -s d1 -u %s -o %s -t %s",
-                relativePathForTesting, LAST_COMMIT_DATE, OUTPUT_DIRECTORY, TIME_ZONE);
-        runTest(cliInput, "LocalRepoSystemTest/testRelativePathing");
+        InputBuilder inputBuilder = getInputBuilder().addRepos(relativePathForTesting);
+        runTest(inputBuilder.build(), "LocalRepoSystemTest/testRelativePathing");
+    }
+
+    private InputBuilder getInputBuilder() {
+        return new InputBuilder()
+                .addSinceDate(SinceDateArgumentType.FIRST_COMMIT_DATE_SHORTHAND)
+                .addUntilDate(LAST_COMMIT_DATE)
+                .addOutput(OUTPUT_DIRECTORY)
+                .addTimezone(TIME_ZONE);
     }
 
     /**
@@ -79,7 +88,7 @@ public class LocalRepoSystemTest {
      * files in {@code expectedFilesPathString}.
      */
     private void runTest(String commandArgs, String expectedFilesPathString) {
-        String[] args = commandArgs.split(" ");
+        String[] args = translateCommandline(commandArgs);
         RepoSense.main(args);
         Path expectedFilesPath = loadResource(getClass(), expectedFilesPathString);
         SystemTestUtil.verifyReportJsonFiles(expectedFilesPath, REPORT_DIRECTORY_PATH);
