@@ -227,7 +227,6 @@ public class AuthorshipAnalyzer {
          */
 
         /*
-            java method
             java comment line
             markdown line
             css line
@@ -243,6 +242,13 @@ public class AuthorshipAnalyzer {
                         "int depthLimit = 10;",
                         "int maxDepthLimit = 10;",
                         "int maxDepthLimit = getXXX() * getYYY();",
+                },
+                new String[] { // java method
+                        "public void printMessage() { System.out.print(\"Hello\n\"); }",
+                        "private void printMessage() { System.out.println(\"Hello World!\"); }",
+                        "private void printMessage(String message) { System.out.println(message); }",
+                        "private static void logInfo(String info) { logger.info(info); }",
+                        "private static void logInfo(Level level, String message) { logger.log(level, message); }",
                 },
         };
 
