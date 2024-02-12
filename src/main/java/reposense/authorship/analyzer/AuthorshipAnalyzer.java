@@ -227,7 +227,6 @@ public class AuthorshipAnalyzer {
          */
 
         /*
-            markdown line
             css line
          */
 
@@ -255,6 +254,13 @@ public class AuthorshipAnalyzer {
                         "// Returns the deleted line with the lowest originality score.",
                         "/** Returns the deleted line with the lowest originality score. */",
                         "/** Returns the deleted line in {@code fileDiffResult} that has the lowest originality with {@code lineContent}. */",
+                },
+                new String[] { // markdown line
+                        "The runtime decrease from 1.5h to 15 min.",
+                        "The runtime **_decrease_** from 1.5h to 15 min.",
+                        "The runtime **_decrease_** from `1.5` hour to `15` minute.",
+                        "The runtime **_decrease_** from `1.5` hour to `15` minute by adding caching.",
+                        "The runtime **_decrease_** from `1.5` hour to `15` minute by caching `git log` and `git diff` results.",
                 },
         };
 
