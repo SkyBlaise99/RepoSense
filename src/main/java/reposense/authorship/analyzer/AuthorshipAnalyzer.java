@@ -218,6 +218,9 @@ public class AuthorshipAnalyzer {
     }
 
     public static void main(String[] args) {
+        String[] testTitles = {
+                "Java Statement", "Java Method", "Java Comment Line", "Markdown Line", "CSS Line"
+        };
         /*
             Original
             a trivial edit
@@ -225,11 +228,12 @@ public class AuthorshipAnalyzer {
             an edit just enough to give full credit
             an edit significantly bigger than the bar
          */
-        String[] titles = {
+        String[] stringTitles = {
                 "Original Version", "Trivial Edit\t", "Non-trivial Edit", "Full Credit Edit", "Significantly Edit"
         };
+
         String[][] testcases = new String[][] {
-                new String[] { // short Java statement
+                new String[] { // java statement
                         "int limit = 0;",
                         "int limit = 10;",
                         "int depthLimit = 10;",
@@ -237,7 +241,7 @@ public class AuthorshipAnalyzer {
                         "int maxDepthLimit = getXXX() * getYYY();",
                 },
                 new String[] { // java method
-                        "public void printMessage() { System.out.print(\"Hello\n\"); }",
+                        "public void printMessage() { System.out.print(\"Hello\"); }",
                         "private void printMessage() { System.out.println(\"Hello World!\"); }",
                         "private void printMessage(String message) { System.out.println(message); }",
                         "private static void logInfo(String info) { logger.info(info); }",
@@ -266,9 +270,12 @@ public class AuthorshipAnalyzer {
                 },
         };
 
-        for (String[] testcase : testcases) {
-            for (int i = 0; i < titles.length; i++) {
-                System.out.println(titles[i] + "\t" + testcase[i]);
+        for (int j = 0; j < testTitles.length; j++) {
+            System.out.println("========== " + testTitles[j]);
+
+            String[] testcase = testcases[j];
+            for (int i = 0; i < stringTitles.length; i++) {
+                System.out.println(stringTitles[i] + "\t\t" + testcase[i]);
 
                 if (i > 0) {
                     double originalityScore = computeOriginalityScore(testcase[i], testcase[0]);
