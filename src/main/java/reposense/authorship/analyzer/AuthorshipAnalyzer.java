@@ -216,4 +216,22 @@ public class AuthorshipAnalyzer {
 
         return new GitBlameLineInfo(commitHash, author, timestampMilliseconds);
     }
+
+    public static void main(String[] args) {
+        /*
+            Original
+            a trivial edit
+            a non-trivial edit but not enough to give full credit
+            an edit just enough to give full credit
+            an edit significantly bigger than the bar
+         */
+
+        /*
+            short Java statement
+            java method
+            java comment line
+            markdown line
+            css line
+         */
+    }
 }
