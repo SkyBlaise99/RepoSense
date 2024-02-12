@@ -225,11 +225,6 @@ public class AuthorshipAnalyzer {
             an edit just enough to give full credit
             an edit significantly bigger than the bar
          */
-
-        /*
-            css line
-         */
-
         String[] titles = {
                 "Original Version", "Trivial Edit\t", "Non-trivial Edit", "Full Credit Edit", "Significantly Edit"
         };
@@ -261,6 +256,13 @@ public class AuthorshipAnalyzer {
                         "The runtime **_decrease_** from `1.5` hour to `15` minute.",
                         "The runtime **_decrease_** from `1.5` hour to `15` minute by adding caching.",
                         "The runtime **_decrease_** from `1.5` hour to `15` minute by caching `git log` and `git diff` results.",
+                },
+                new String[] { // css line
+                        "body { font-size: 16px; }",
+                        "body { font-size: 20px; }",
+                        "body { font-family: Arial; }",
+                        "body { background-color: blue; }",
+                        "body { font-size: 20px; font-family: Arial; background-color: blue; }",
                 },
         };
 
