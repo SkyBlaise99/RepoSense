@@ -227,11 +227,36 @@ public class AuthorshipAnalyzer {
          */
 
         /*
-            short Java statement
             java method
             java comment line
             markdown line
             css line
          */
+
+        String[] titles = {
+                "Original Version", "Trivial Edit\t", "Non-trivial Edit", "Full Credit Edit", "Significantly Edit"
+        };
+        String[][] testcases = new String[][] {
+                new String[] { // short Java statement
+                        "int limit = 0;",
+                        "int limit = 10;",
+                        "int depthLimit = 10;",
+                        "int maxDepthLimit = 10;",
+                        "int maxDepthLimit = getXXX() * getYYY();",
+                },
+        };
+
+        for (String[] testcase : testcases) {
+            for (int i = 0; i < titles.length; i++) {
+                System.out.println(titles[i] + "\t" + testcase[i]);
+
+                if (i > 0) {
+                    double originalityScore = computeOriginalityScore(testcase[i], testcase[0]);
+                    System.out.println("Originality Score: " + originalityScore);
+                }
+            }
+
+            System.out.println();
+        }
     }
 }
