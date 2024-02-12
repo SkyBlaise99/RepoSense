@@ -227,7 +227,6 @@ public class AuthorshipAnalyzer {
          */
 
         /*
-            java comment line
             markdown line
             css line
          */
@@ -249,6 +248,13 @@ public class AuthorshipAnalyzer {
                         "private void printMessage(String message) { System.out.println(message); }",
                         "private static void logInfo(String info) { logger.info(info); }",
                         "private static void logInfo(Level level, String message) { logger.log(level, message); }",
+                },
+                new String[] { // java comment line
+                        "// Returns the line with the lowest score.",
+                        "/** Returns the line with the lowest score. */",
+                        "// Returns the deleted line with the lowest originality score.",
+                        "/** Returns the deleted line with the lowest originality score. */",
+                        "/** Returns the deleted line in {@code fileDiffResult} that has the lowest originality with {@code lineContent}. */",
                 },
         };
 
