@@ -279,7 +279,7 @@ public class AuthorshipAnalyzer {
 
                 if (i > 0) {
                     double originalityScore = computeOriginalityScore(testcase[i], testcase[0]);
-                    System.out.println("Originality Score: " + originalityScore);
+                    System.out.println("Originality Score: " + String.format("%.2f", originalityScore));
                 }
             }
 
