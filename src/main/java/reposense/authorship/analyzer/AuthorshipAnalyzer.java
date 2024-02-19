@@ -286,4 +286,43 @@ public class AuthorshipAnalyzer {
             System.out.println();
         }
     }
+
+    public static void main2(String[] args) {
+    /*
+    public static int factorial1(int n) {
+        if (n < 0) {
+            throw new RuntimeException("Factorial is not defined for negative numbers");
+        }
+
+        int result = 1;
+        for (int i = 1; i <= n; i++) {
+            result *= i;
+        }
+
+        return result;
+    }
+
+    public static int factorial2(int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException("Factorial is not defined for negative numbers");
+        }
+
+        return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);
+    }
+     */
+
+        String[] add = new String[] {
+                "    throw new RuntimeException(\"Factorial is not defined for negative numbers\");\n",
+                "return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);\n"
+        };
+
+        String[] del = new String[] {
+                "    throw new IllegalArgumentException(\"Factorial is not defined for negative numbers\");\n",
+                "int result = 1;\n",
+                "for (int i = 1; i <= n; i++) {\n",
+                "    result *= i;\n",
+                "}\n",
+                "return result;\n"
+        };
+    }
 }
