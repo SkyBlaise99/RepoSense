@@ -224,7 +224,7 @@ public class AuthorshipAnalyzer {
 
     public static void test2() {
     /*
-    public static int factorial1(int n) {
+    public static int factorial(int n) {
         if (n < 0) {
             throw new RuntimeException("Factorial is not defined for negative numbers");
         }
@@ -237,7 +237,7 @@ public class AuthorshipAnalyzer {
         return result;
     }
 
-    public static int factorial2(int n) {
+    public static int factorial(int n) {
         if (n < 0) {
             throw new IllegalArgumentException("Factorial is not defined for negative numbers");
         }
@@ -275,7 +275,8 @@ public class AuthorshipAnalyzer {
 
             System.out.println("Added: " + addedString);
             System.out.println("Deleted: " + mostSimilarDeletedString);
-            System.out.println("Originality Score: " + minOriginalityScore);
+            System.out.println("Originality Score: " + String.format("%.2f", minOriginalityScore));
+            System.out.println();
         }
     }
 
