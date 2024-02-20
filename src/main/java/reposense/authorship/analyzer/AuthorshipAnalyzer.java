@@ -226,7 +226,7 @@ public class AuthorshipAnalyzer {
     /*
     public static int factorial(int n) {
         if (n < 0) {
-            throw new RuntimeException("Factorial is not defined for negative numbers");
+            throw new IllegalArgumentException();
         }
 
         int result = 1;
@@ -239,25 +239,28 @@ public class AuthorshipAnalyzer {
 
     public static int factorial(int n) {
         if (n < 0) {
-            throw new IllegalArgumentException("Factorial is not defined for negative numbers");
+            throw new IllegalArgumentException("n must be positive!");
         }
 
-        return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);
+        int result = 1;
+        for (int i = n; i >= 1; i--) {
+            result *= i;
+        }
+
+        System.out.println(result);
+        return result;
     }
      */
 
-        String[] addedStrings = new String[] {
-                "    throw new RuntimeException(\"Factorial is not defined for negative numbers\");",
-                "return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);"
+        String[] deletedStrings = new String[] {
+                "    throw new IllegalArgumentException();",
+                "for (int i = 1; i <= n; i++) {",
         };
 
-        String[] deletedStrings = new String[] {
-                "    throw new IllegalArgumentException(\"Factorial is not defined for negative numbers\");",
-                "int result = 1;",
-                "for (int i = 1; i <= n; i++) {",
-                "    result *= i;",
-                "}",
-                "return result;"
+        String[] addedStrings = new String[] {
+                "    throw new IllegalArgumentException(\"n must be positive!\");",
+                "for (int i = n; i >= 1; i--) {",
+                "System.out.println(result);"
         };
 
         for (String addedString : addedStrings) {
