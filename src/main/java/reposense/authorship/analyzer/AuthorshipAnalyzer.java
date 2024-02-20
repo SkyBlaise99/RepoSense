@@ -274,9 +274,13 @@ public class AuthorshipAnalyzer {
                     minOriginalityScore = originalityScore;
                     mostSimilarDeletedString = deletedString;
                 }
+
+                // System.out.println("Added: " + addedString);
+                // System.out.println("Deleted: " + deletedString);
+                // System.out.println("Originality Score: " + String.format("%.2f", originalityScore));
             }
 
-            System.out.println("Added: " + addedString);
+            System.out.println("  Added: " + addedString);
             System.out.println("Deleted: " + mostSimilarDeletedString);
             System.out.println("Originality Score: " + String.format("%.2f", minOriginalityScore));
             System.out.println();
