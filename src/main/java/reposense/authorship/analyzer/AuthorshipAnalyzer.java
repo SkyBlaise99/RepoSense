@@ -218,6 +218,68 @@ public class AuthorshipAnalyzer {
     }
 
     public static void main(String[] args) {
+        test1();
+        test2();
+    }
+
+    public static void test2() {
+    /*
+    public static int factorial1(int n) {
+        if (n < 0) {
+            throw new RuntimeException("Factorial is not defined for negative numbers");
+        }
+
+        int result = 1;
+        for (int i = 1; i <= n; i++) {
+            result *= i;
+        }
+
+        return result;
+    }
+
+    public static int factorial2(int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException("Factorial is not defined for negative numbers");
+        }
+
+        return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);
+    }
+     */
+
+        String[] addedStrings = new String[] {
+                "    throw new RuntimeException(\"Factorial is not defined for negative numbers\");",
+                "return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);"
+        };
+
+        String[] deletedStrings = new String[] {
+                "    throw new IllegalArgumentException(\"Factorial is not defined for negative numbers\");",
+                "int result = 1;",
+                "for (int i = 1; i <= n; i++) {",
+                "    result *= i;",
+                "}",
+                "return result;"
+        };
+
+        for (String addedString : addedStrings) {
+            double minOriginalityScore = Integer.MAX_VALUE;
+            String mostSimilarDeletedString = "";
+
+            for (String deletedString : deletedStrings) {
+                double originalityScore = computeOriginalityScore(addedString, deletedString);
+
+                if (originalityScore < minOriginalityScore) {
+                    minOriginalityScore = originalityScore;
+                    mostSimilarDeletedString = deletedString;
+                }
+            }
+
+            System.out.println("Added: " + addedString);
+            System.out.println("Deleted: " + mostSimilarDeletedString);
+            System.out.println("Originality Score: " + minOriginalityScore);
+        }
+    }
+
+    public static void test1() {
         String[] testTitles = {
                 "Java Statement", "Java Method", "Java Comment Line", "Markdown Line", "CSS Line"
         };
@@ -284,63 +346,6 @@ public class AuthorshipAnalyzer {
             }
 
             System.out.println();
-        }
-    }
-
-    public static void main2(String[] args) {
-    /*
-    public static int factorial1(int n) {
-        if (n < 0) {
-            throw new RuntimeException("Factorial is not defined for negative numbers");
-        }
-
-        int result = 1;
-        for (int i = 1; i <= n; i++) {
-            result *= i;
-        }
-
-        return result;
-    }
-
-    public static int factorial2(int n) {
-        if (n < 0) {
-            throw new IllegalArgumentException("Factorial is not defined for negative numbers");
-        }
-
-        return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);
-    }
-     */
-
-        String[] addedStrings = new String[] {
-                "    throw new RuntimeException(\"Factorial is not defined for negative numbers\");",
-                "return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);"
-        };
-
-        String[] deletedStrings = new String[] {
-                "    throw new IllegalArgumentException(\"Factorial is not defined for negative numbers\");",
-                "int result = 1;",
-                "for (int i = 1; i <= n; i++) {",
-                "    result *= i;",
-                "}",
-                "return result;"
-        };
-
-        for (String addedString : addedStrings) {
-            double minOriginalityScore = Integer.MAX_VALUE;
-            String mostSimilarDeletedString = "";
-
-            for (String deletedString : deletedStrings) {
-                double originalityScore = computeOriginalityScore(addedString, deletedString);
-
-                if (originalityScore < minOriginalityScore) {
-                    minOriginalityScore = originalityScore;
-                    mostSimilarDeletedString = deletedString;
-                }
-            }
-
-            System.out.println("Added: " + addedString);
-            System.out.println("Deleted: " + mostSimilarDeletedString);
-            System.out.println("Originality Score: " + minOriginalityScore);
         }
     }
 }
