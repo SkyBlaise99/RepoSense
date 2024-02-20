@@ -311,18 +311,36 @@ public class AuthorshipAnalyzer {
     }
      */
 
-        String[] add = new String[] {
-                "    throw new RuntimeException(\"Factorial is not defined for negative numbers\");\n",
-                "return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);\n"
+        String[] addedStrings = new String[] {
+                "    throw new RuntimeException(\"Factorial is not defined for negative numbers\");",
+                "return IntStream.rangeClosed(1, n).reduce(1, (a, b) -> a * b);"
         };
 
-        String[] del = new String[] {
-                "    throw new IllegalArgumentException(\"Factorial is not defined for negative numbers\");\n",
-                "int result = 1;\n",
-                "for (int i = 1; i <= n; i++) {\n",
-                "    result *= i;\n",
-                "}\n",
-                "return result;\n"
+        String[] deletedStrings = new String[] {
+                "    throw new IllegalArgumentException(\"Factorial is not defined for negative numbers\");",
+                "int result = 1;",
+                "for (int i = 1; i <= n; i++) {",
+                "    result *= i;",
+                "}",
+                "return result;"
         };
+
+        for (String addedString : addedStrings) {
+            double minOriginalityScore = Integer.MAX_VALUE;
+            String mostSimilarDeletedString = "";
+
+            for (String deletedString : deletedStrings) {
+                double originalityScore = computeOriginalityScore(addedString, deletedString);
+
+                if (originalityScore < minOriginalityScore) {
+                    minOriginalityScore = originalityScore;
+                    mostSimilarDeletedString = deletedString;
+                }
+            }
+
+            System.out.println("Added: " + addedString);
+            System.out.println("Deleted: " + mostSimilarDeletedString);
+            System.out.println("Originality Score: " + minOriginalityScore);
+        }
     }
 }
