@@ -229,7 +229,7 @@ public class AuthorshipAnalyzer {
             an edit significantly bigger than the bar
          */
         String[] stringTitles = {
-                "Original Version", "Trivial Edit\t", "Non-trivial Edit", "Full Credit Edit", "Significantly Edit"
+                "Original Version", "Trivial Edit\t", "Borderline Edit", "Full Credit Edit", "Significantly Edit"
         };
 
         String[][] testcases = new String[][] {
