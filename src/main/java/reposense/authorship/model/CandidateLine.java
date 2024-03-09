@@ -9,14 +9,16 @@ public class CandidateLine {
     private final String filePath;
     private final String gitBlameCommitHash;
     private final double originalityScore;
+    private final int levenshteinDistance;
 
     public CandidateLine(int lineNumber, String lineContent, String filePath, String gitBlameCommitHash,
-            double originalityScore) {
+            double originalityScore, int levenshteinDistance) {
         this.lineNumber = lineNumber;
         this.lineContent = lineContent;
         this.filePath = filePath;
         this.gitBlameCommitHash = gitBlameCommitHash;
         this.originalityScore = originalityScore;
+        this.levenshteinDistance = levenshteinDistance;
     }
 
     public int getLineNumber() {
@@ -37,5 +39,9 @@ public class CandidateLine {
 
     public double getOriginalityScore() {
         return originalityScore;
+    }
+
+    public int getLevenshteinDistance() {
+        return levenshteinDistance;
     }
 }

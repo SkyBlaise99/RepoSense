@@ -3,6 +3,7 @@ package reposense.authorship.analyzer;
 import java.nio.file.Paths;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -47,48 +48,49 @@ public class AuthorshipAnalyzer {
     private static final ConcurrentHashMap<String, ArrayList<ArrayList<String>>> GIT_DIFF_CACHE =
             new ConcurrentHashMap<>();
 
-    public static Author getMostContributingAuthor(RepoConfiguration config, String filePath, String lineContent,
-            String commitHash, Author currentAuthor, double originalityThreshold) {
-        return currentAuthor;
-    }
-
     /**
      * Analyzes the authorship of {@code lineContent} in {@code filePath} based on {@code originalityThreshold}.
-     * Returns {@code true} if {@code currentAuthor} should be assigned full credit, {@code false} otherwise.
+     * Returns the contribution map consisting of all the authors and their contribution values.
      */
-    private static boolean analyzeAuthorship(RepoConfiguration config, String filePath, String lineContent,
-            String commitHash, Author currentAuthor, double originalityThreshold) {
-        // Empty lines are ignored and given full credit
+    public static HashMap<Author, Integer> analyzeAuthorship(RepoConfiguration config, String filePath, String lineContent,
+            String commitHash, Author currentAuthor, double originalityThreshold,
+            HashMap<Author, Integer> contributionMap) {
+        // Empty lines are ignored.
         if (lineContent.isEmpty()) {
-            return true;
+            return contributionMap;
         }
 
         CandidateLine deletedLine = getDeletedLineWithLowestOriginality(config, filePath, lineContent, commitHash);
 
-        // Give full credit if there are no deleted lines found or deleted line is more than originality threshold
-        if (deletedLine == null || deletedLine.getOriginalityScore() > originalityThreshold) {
-            return true;
+        // Stop if there are no deleted lines found, current author gets full contribution
+        if (deletedLine == null) {
+            contributionMap.put(currentAuthor, lineContent.length());
+            return contributionMap;
+        }
+
+        int levDiff = StringsUtil.getLevenshteinDistance(deletedLine.getLineContent(), lineContent);
+        assert deletedLine.getLevenshteinDistance() == levDiff;
+        // Current author's contribution is the difference between the 2 versions
+        contributionMap.put(currentAuthor, deletedLine.getLevenshteinDistance());
+
+        // Stop if deleted line is deemed to be originated at this point
+        if (deletedLine.getOriginalityScore() > originalityThreshold) {
+            return contributionMap;
         }
 
         GitBlameLineInfo deletedLineInfo = getGitBlameLineInfo(config, deletedLine);
         long sinceDateInMilliseconds = ZonedDateTime.of(config.getSinceDate(), config.getZoneId()).toEpochSecond();
 
-        // Give full credit if author is unknown, is before since date, is in ignored list, or is an ignored file
-        if (deletedLineInfo.getAuthor().equals(Author.UNKNOWN_AUTHOR)
-                || deletedLineInfo.getTimestampMilliseconds() < sinceDateInMilliseconds
+        // Stop if is before since date, is in ignored list, or is an ignored file
+        if (deletedLineInfo.getTimestampMilliseconds() < sinceDateInMilliseconds
                 || CommitHash.isInsideCommitList(deletedLineInfo.getCommitHash(), config.getIgnoreCommitList())
                 || deletedLineInfo.getAuthor().isIgnoringFile(Paths.get(deletedLine.getFilePath()))) {
-            return true;
+            return contributionMap;
         }
 
-        // Give partial credit if currentAuthor is not the author of the previous version
-        if (!currentAuthor.equals(deletedLineInfo.getAuthor())) {
-            return false;
-        }
-
-        // Check the previous version as currentAuthor is the same as author of the previous version
+        // Check the previous versions
         return analyzeAuthorship(config, deletedLine.getFilePath(), deletedLine.getLineContent(),
-                deletedLineInfo.getCommitHash(), deletedLineInfo.getAuthor(), originalityThreshold);
+                deletedLineInfo.getCommitHash(), deletedLineInfo.getAuthor(), originalityThreshold, contributionMap);
     }
 
     /**
@@ -204,13 +206,14 @@ public class AuthorshipAnalyzer {
 
                 if (lineChanged.startsWith(DELETED_LINE_SYMBOL)) {
                     String deletedLineContent = lineChanged.substring(DELETED_LINE_SYMBOL.length());
-                    double originalityScore = computeOriginalityScore(lineContent, deletedLineContent);
+                    int levenshteinDistance = StringsUtil.getLevenshteinDistance(lineContent, deletedLineContent);
+                    double originalityScore = 1.0 * levenshteinDistance / deletedLineContent.length();
 
                     if (lowestOriginalityLine == null
                             || originalityScore < lowestOriginalityLine.getOriginalityScore()) {
                         lowestOriginalityLine = new CandidateLine(
-                                currentPreImageLineNumber, deletedLineContent, filePath, commitHash,
-                                originalityScore);
+                                currentPreImageLineNumber, deletedLineContent, filePath, commitHash, originalityScore,
+                                levenshteinDistance);
                     }
                 }
 
@@ -239,14 +242,6 @@ public class AuthorshipAnalyzer {
         }
 
         return Integer.parseInt(linesChangedHeaderMatcher.group(PREIMAGE_START_LINE_GROUP_NAME));
-    }
-
-    /**
-     * Calculates the originality score of {@code s} with {@code baseString}.
-     */
-    private static double computeOriginalityScore(String s, String baseString) {
-        double levenshteinDistance = StringsUtil.getLevenshteinDistance(s, baseString);
-        return levenshteinDistance / baseString.length();
     }
 
     /**

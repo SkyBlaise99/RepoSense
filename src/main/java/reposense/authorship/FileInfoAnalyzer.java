@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -189,11 +190,35 @@ public class FileInfoAnalyzer {
 
             if (shouldAnalyzeAuthorship && !author.equals(Author.UNKNOWN_AUTHOR)) {
                 String lineContent = fileInfo.getLine(lineNumber + 1).getContent();
-                Author mostContributingAuthor = AuthorshipAnalyzer.getMostContributingAuthor(config, fileInfo.getPath(),
-                        lineContent, commitHash, author, originalityThreshold);
+
+                HashMap<Author, Integer> contributionMap = new HashMap<>();
+                contributionMap.put(author, 0);
+
+                AuthorshipAnalyzer.analyzeAuthorship(config, fileInfo.getPath(), lineContent, commitHash, author,
+                        originalityThreshold, contributionMap);
+                contributionMap.remove(Author.UNKNOWN_AUTHOR);
+
+                Author mostContributingAuthor = getHighestContributionAuthor(contributionMap);
                 fileInfo.setLineAuthor(lineNumber, mostContributingAuthor);
             }
         }
+    }
+
+    private Author getHighestContributionAuthor(HashMap<Author, Integer> contributionMap) {
+        Author highestContributionAuthor = Author.UNKNOWN_AUTHOR;
+        int highestContribution = -1;
+
+        for (Map.Entry<Author, Integer> entry : contributionMap.entrySet()) {
+            Author author = entry.getKey();
+            int contribution = entry.getValue();
+
+            if (contribution > highestContribution) {
+                highestContributionAuthor = author;
+                highestContribution = contribution;
+            }
+        }
+
+        return highestContributionAuthor;
     }
 
     /**
