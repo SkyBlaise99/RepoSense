@@ -17,7 +17,7 @@ public class StringsUtil {
         StringBuilder sb = new StringBuilder();
         Pattern regexPattern = Pattern.compile(regex);
 
-        for (String line: split) {
+        for (String line : split) {
             if (regexPattern.matcher(line).matches()) {
                 sb.append(line).append("\n");
             }
@@ -92,5 +92,53 @@ public class StringsUtil {
      */
     public static boolean isNumeric(String string) {
         return Pattern.compile("^\\d+$").matcher(string).matches();
+    }
+
+    /**
+     * Calculates the Levenshtein Distance between two strings using Dynamic Programming.
+     * Insertion, deletion, and substitution are all of cost 1.
+     * This version improves the space complexity down to O(min(s, t))
+     */
+    public static int getLevenshteinDistance(String s, String t) {
+        // Early termination if either string is empty, lev dist is just the length of the other string.
+        if (s.isEmpty()) {
+            return t.length();
+        }
+
+        if (t.isEmpty()) {
+            return s.length();
+        }
+
+        if (s.length() < t.length()) {
+            // Swap s and t to ensure s is always the longer string
+            String temp = s;
+            s = t;
+            t = temp;
+        }
+
+        int[] dp = new int[t.length() + 1];
+        for (int i = 0; i <= t.length(); i++) {
+            dp[i] = i;
+        }
+
+        for (int i = 1; i <= s.length(); i++) {
+            // Store the value of the previous row's column
+            int prev = dp[0];
+            dp[0] = i;
+
+            for (int j = 1; j <= t.length(); j++) {
+                int temp = dp[j];
+
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    dp[j] = prev;
+                } else {
+                    dp[j] = Math.min(prev, Math.min(dp[j - 1], dp[j])) + 1;
+                }
+
+                prev = temp;
+            }
+        }
+
+        return dp[t.length()];
     }
 }
