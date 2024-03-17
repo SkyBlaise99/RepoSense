@@ -52,8 +52,8 @@ public class AuthorshipAnalyzer {
      * Analyzes the authorship of {@code lineContent} in {@code filePath} based on {@code originalityThreshold}.
      * Returns the contribution map consisting of all the authors and their contribution values.
      */
-    public static HashMap<Author, Integer> analyzeAuthorship(RepoConfiguration config, String filePath, String lineContent,
-            String commitHash, Author currentAuthor, double originalityThreshold,
+    public static HashMap<Author, Integer> analyzeAuthorship(RepoConfiguration config, String filePath,
+            String lineContent, String commitHash, Author currentAuthor, double originalityThreshold,
             HashMap<Author, Integer> contributionMap) {
         // Empty lines are ignored.
         if (lineContent.isEmpty()) {
