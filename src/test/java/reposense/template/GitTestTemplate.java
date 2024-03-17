@@ -37,7 +37,7 @@ import reposense.util.TestRepoCloner;
  */
 
 public class GitTestTemplate {
-    protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/reposense/testrepo-Alpha.git";
+    protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/SkyBlaise99/testrepo-Alpha.git";
     protected static final String IGNORE_REVS_FILE_NAME = ".git-blame-ignore-revs";
     protected static final String TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH = "1565-find-previous-authors";
     protected static final String FIRST_COMMIT_HASH = "7d7584f";
@@ -58,6 +58,7 @@ public class GitTestTemplate {
     protected static final String YONG_AUTHOR_NAME = "Yong Hao TENG";
     protected static final String MINGYI_AUTHOR_NAME = "myteo";
     protected static final String SHICHEN_AUTHOR_NAME = "SkyBlaise";
+    protected static final String SHICHEN2_AUTHOR_NAME = "Sky Blaise";
     protected static final String JAMES_AUTHOR_NAME = "jamessspanggg";
     protected static final String JAMES_ALTERNATIVE_AUTHOR_NAME = "James Pang";
     protected static final String JINYAO_AUTHOR_NAME = "jylee-git";
