@@ -37,7 +37,10 @@ import reposense.util.TestRepoCloner;
  */
 
 public class GitTestTemplate {
-    protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/SkyBlaise99/testrepo-Alpha.git";
+    protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/reposense/testrepo-Alpha.git";
+    // here are the files for AuthorshipAnalyzerTest. Put them onto RepoSense's testrepo-Alpha repo on a separate branch
+    // to make everything work together.
+    // protected static final String TEST_REPO_GIT_LOCATION = "https://github.com/SkyBlaise99/testrepo-Alpha.git";
     protected static final String IGNORE_REVS_FILE_NAME = ".git-blame-ignore-revs";
     protected static final String TEST_REPO_BLAME_WITH_PREVIOUS_AUTHORS_BRANCH = "1565-find-previous-authors";
     protected static final String FIRST_COMMIT_HASH = "7d7584f";
