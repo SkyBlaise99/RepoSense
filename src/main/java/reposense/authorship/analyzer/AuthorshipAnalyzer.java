@@ -68,8 +68,6 @@ public class AuthorshipAnalyzer {
             return contributionMap;
         }
 
-        int levDiff = StringsUtil.getLevenshteinDistance(deletedLine.getLineContent(), lineContent);
-        assert deletedLine.getLevenshteinDistance() == levDiff;
         // Current author's contribution is the difference between the 2 versions
         contributionMap.put(currentAuthor, deletedLine.getLevenshteinDistance());
 
