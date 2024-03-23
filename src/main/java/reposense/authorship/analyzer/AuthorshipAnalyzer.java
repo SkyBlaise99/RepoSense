@@ -62,19 +62,15 @@ public class AuthorshipAnalyzer {
 
         CandidateLine deletedLine = getDeletedLineWithLowestOriginality(config, filePath, lineContent, commitHash);
 
-        // Stop if there are no deleted lines found, current author gets full contribution
-        if (deletedLine == null) {
+        // Stop if there are no deleted lines found or if deleted line is deemed to be originated at this point
+        // Current author gets full contribution
+        if (deletedLine == null || deletedLine.getOriginalityScore() > originalityThreshold) {
             contributionMap.put(currentAuthor, lineContent.length());
             return contributionMap;
         }
 
         // Current author's contribution is the difference between the 2 versions
         contributionMap.put(currentAuthor, deletedLine.getLevenshteinDistance());
-
-        // Stop if deleted line is deemed to be originated at this point
-        if (deletedLine.getOriginalityScore() > originalityThreshold) {
-            return contributionMap;
-        }
 
         GitBlameLineInfo deletedLineInfo = getGitBlameLineInfo(config, deletedLine);
         long sinceDateInMilliseconds = ZonedDateTime.of(config.getSinceDate(), config.getZoneId()).toEpochSecond();
