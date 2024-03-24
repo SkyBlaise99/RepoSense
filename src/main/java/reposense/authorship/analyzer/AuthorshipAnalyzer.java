@@ -69,16 +69,19 @@ public class AuthorshipAnalyzer {
             return contributionMap;
         }
 
-        // Current author's contribution is the difference between the 2 versions
-        contributionMap.put(currentAuthor, deletedLine.getLevenshteinDistance());
-
         GitBlameLineInfo deletedLineInfo = getGitBlameLineInfo(config, deletedLine);
+
+        // If the deleted line is in ignored list, or is an ignored file, then contribution is not accounted
+        if (!CommitHash.isInsideCommitList(deletedLineInfo.getCommitHash(), config.getIgnoreCommitList())
+                && !deletedLineInfo.getAuthor().isIgnoringFile(Paths.get(deletedLine.getFilePath()))) {
+            // Current author's contribution is the difference between the 2 versions
+            contributionMap.put(currentAuthor, deletedLine.getLevenshteinDistance());
+        }
+
         long sinceDateInMilliseconds = ZonedDateTime.of(config.getSinceDate(), config.getZoneId()).toEpochSecond();
 
-        // Stop if is before since date, is in ignored list, or is an ignored file
-        if (deletedLineInfo.getTimestampMilliseconds() < sinceDateInMilliseconds
-                || CommitHash.isInsideCommitList(deletedLineInfo.getCommitHash(), config.getIgnoreCommitList())
-                || deletedLineInfo.getAuthor().isIgnoringFile(Paths.get(deletedLine.getFilePath()))) {
+        // Stop if is before since date
+        if (deletedLineInfo.getTimestampMilliseconds() < sinceDateInMilliseconds) {
             return contributionMap;
         }
 
