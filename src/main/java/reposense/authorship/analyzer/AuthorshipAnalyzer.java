@@ -219,7 +219,7 @@ public class AuthorshipAnalyzer {
 
     public static void main(String[] args) {
         test1();
-        test2();
+//        test2();
     }
 
     public static void test2() {
@@ -325,11 +325,11 @@ public class AuthorshipAnalyzer {
                         "/** Returns the deleted line in {@code fileDiffResult} that has the lowest originality with {@code lineContent}. */",
                 },
                 new String[] { // markdown line
-                        "The runtime decrease from 1.5h to 15 min.",
-                        "The runtime **_decrease_** from 1.5h to 15 min.",
-                        "The runtime **_decrease_** from `1.5` hour to `15` minute.",
-                        "The runtime **_decrease_** from `1.5` hour to `15` minute by adding caching.",
-                        "The runtime **_decrease_** from `1.5` hour to `15` minute by caching `git log` and `git diff` results.",
+                        "The run time decreases from 1.5h to 15 min.",
+                        "The run time ***decreases*** from `1.5`h to `15` min.",
+                        "The run time decreases from 1.5 hour to 15 min by adding caching.",
+                        "The run time ***decreases*** from `1.5` hour to `15` minute by adding caching.",
+                        "The run time ***decreases*** from `1.5` hour to `15` minute by caching `git log` and `git diff` results.",
                 },
                 new String[] { // css line
                         "body { font-size: 16px; }",
