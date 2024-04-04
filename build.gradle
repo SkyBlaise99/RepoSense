@@ -64,7 +64,7 @@ def buildFrontend = tasks.register('buildFrontend', com.liferay.gradle.plugins.n
 }
 
 def zipReport = tasks.register('zipReport', Zip) {
-    dependsOn buildFrontend
+//    dependsOn buildFrontend
     from 'frontend/build/'
     archiveBaseName = 'templateZip'
     destinationDirectory = file('src/main/resources')
