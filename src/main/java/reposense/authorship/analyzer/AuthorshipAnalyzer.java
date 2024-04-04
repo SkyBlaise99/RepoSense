@@ -67,6 +67,7 @@ public class AuthorshipAnalyzer {
 
         // Give full credit if deleted line's originality score exceeds the originality threshold
         if (deletedLine.getOriginalityScore() > originalityThreshold) {
+            printInfo(true, lineContent, deletedLine);
             return true;
         }
 
@@ -85,12 +86,22 @@ public class AuthorshipAnalyzer {
 
         // Give partial credit if currentAuthor is not the author of the previous version
         if (!currentAuthor.equals(previousAuthor)) {
+            printInfo(false, lineContent, deletedLine);
             return false;
         }
 
         // Check the previous version as currentAuthor is the same as author of the previous version
         return analyzeAuthorship(config, deletedLine.getFilePath(), deletedLine.getLineContent(),
                 deletedLineInfo.getCommitHash(), previousAuthor, originalityThreshold);
+    }
+
+    private static void printInfo(boolean isFullCredit, String lineContent, CandidateLine deletedLine) {
+        if (deletedLine.getOriginalityScore() >= 1) return;
+
+        logger.info("zsc: " + (isFullCredit ? "full" : "partial") + " credit");
+        logger.info("zsc: current line: " + lineContent);
+        logger.info("zsc: deleted line: " + deletedLine.getLineContent());
+        logger.info("zsc: originality score: " + deletedLine.getOriginalityScore());
     }
 
     /**
