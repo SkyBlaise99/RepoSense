@@ -219,7 +219,7 @@ public class AuthorshipAnalyzer {
 
     public static void main(String[] args) {
         test1();
-//        test2();
+        // test2();
     }
 
     public static void test2() {
@@ -305,9 +305,9 @@ public class AuthorshipAnalyzer {
         String[][] testcases = new String[][] {
                 new String[] { // java statement
                         "int limit = 0;",
-                        "int limit = 10;",
+                        "int limit = 123;",
                         "int depthLimit = 10;",
-                        "int maxDepthLimit = 10;",
+                        "int maxDepthLimit = 123;",
                         "int maxDepthLimit = getXXX() * getYYY();",
                 },
                 new String[] { // java method
@@ -318,9 +318,9 @@ public class AuthorshipAnalyzer {
                         "private static void logInfo(Level level, String message) { logger.log(level, message); }",
                 },
                 new String[] { // java comment line
-                        "// Returns the line with the lowest score.",
+                        "// Returns the line with lowest score.",
                         "/** Returns the line with the lowest score. */",
-                        "// Returns the deleted line with the lowest originality score.",
+                        "// Returns the deleted line with lowest originality score.",
                         "/** Returns the deleted line with the lowest originality score. */",
                         "/** Returns the deleted line in {@code fileDiffResult} that has the lowest originality with {@code lineContent}. */",
                 },
@@ -333,10 +333,10 @@ public class AuthorshipAnalyzer {
                 },
                 new String[] { // css line
                         "body { font-size: 16px; }",
-                        "body { font-size: 20px; }",
-                        "body { font-family: Arial; }",
-                        "body { background-color: blue; }",
-                        "body { font-size: 20px; font-family: Arial; background-color: blue; }",
+                        "span { font-size: 20px; }",
+                        "body { font-family: Palatino; }",
+                        "body { font-size: 16px; background-color: blue; }",
+                        "body { font-size: 20px; font-family: Palatino; background-color: blue; }",
                 },
         };
 
