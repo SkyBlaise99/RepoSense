@@ -98,9 +98,10 @@ public class AuthorshipAnalyzer {
     private static void printInfo(boolean isFullCredit, String lineContent, CandidateLine deletedLine) {
         if (deletedLine.getOriginalityScore() >= 1) return;
 
-        String delimiter = "_____";
-        logger.info("zsc:" + (isFullCredit ? "full" : "partial") + " credit" + delimiter + lineContent + delimiter
-                + deletedLine.getLineContent() + delimiter + String.format("%.2f", deletedLine.getOriginalityScore()));
+        String delimiter = ",";
+        logger.info("zsc:" + (isFullCredit ? "full" : "partial") + " credit" + lineContent.length() + delimiter +
+                lineContent + deletedLine.getLineContent() + delimiter +
+                String.format("%.2f", deletedLine.getOriginalityScore()));
     }
 
     /**
